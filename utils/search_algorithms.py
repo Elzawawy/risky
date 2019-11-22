@@ -1,4 +1,5 @@
 from utils.priority_queue import PriorityQueue
+import heapq
 
 
 def greedy_best_first_search(initial_state, heuristic):
@@ -66,38 +67,49 @@ def a_star_search(initial_state, heuristic, cost):
     return greedy_best_first_search(initial_state, cost+heuristic)
 
 
-def real_time_a_star_search(initial_state, heuristic):
+def real_time_a_star_search(initial_state, heuristic, cost):
+    """ An informed search that used to reduce the execution time of A*.
+
+        Args:
+            initial_state : Starting state of problem.
+            heuristic : A heuristic estimate to goal h(n).
+            cost : A cost function for a state.
+
+        Returns:
+            current_state : A state that eventually will be the goal state. 
+    """
 
     visited_states_to_heuristic = {}
-    tota_cost_to_state = {}
     current_state = initial_state
+    FIRST_BEST_STATE_INDEX = 1
+    SECOND_BEST_TOTAL_COST_INDEX = 0
 
     while(not current_state.is_goal()):
+
+        tota_cost_to_state = []
+
         # Expand the current state
         for neighbour in current_state.expand():
 
             # If the neighbour exists in the visited_states dictionary, then stored hurestic value in the dictionary is used
             # and added to the cost from the current state to the neighbour to get the total cost 
             if neighbour in visited_states_to_heuristic:
-                neighbour_total_cost = visited_states_to_heuristic[neighbour] + current_state.costTo(neighbour)
+                neighbour_total_cost = visited_states_to_heuristic[neighbour] + cost(current_state, neighbour)
 
             # Else, then calculate the hurestic value of the neighbour
             # and add it to the cost from the current state to the neighbour to get the total cost
             else:
-                neighbour_total_cost = heuristic(neighbour) + current_state.costTo(neighbour)
+                neighbour_total_cost = heuristic(neighbour) + cost(current_state, neighbour)
 
-            
-            # If a state with a total cost exists in tota_cost_to_state dictionary, then delete this entry
-            if neighbour_total_cost in tota_cost_to_state:
-                del(tota_cost_to_state[neighbour_total_cost])
+            # Store the neighbours & their total cost in a min heap 
+            heapq.heappush(tota_cost_to_state, (neighbour_total_cost, neighbour))
 
-            # Else, add the entry (neighbour_total_cost, neighbour) to tota_cost_to_state dictionary
-            else:
-                tota_cost_to_state[neighbour_total_cost] = neighbour
+        temp_state = heapq.heappop(tota_cost_to_state)[FIRST_BEST_STATE_INDEX]
 
+        # Store the current state associated with it the second best total cost value
+        visited_states_to_heuristic[current_state] = heapq.heappop(tota_cost_to_state)[SECOND_BEST_TOTAL_COST_INDEX]
 
-        tota_cost_to_state = list(sorted(tota_cost_to_state.keys()))
-        visited_states_to_heuristic[current_state] = tota_cost_to_state[1][0]
-        current_state = tota_cost_to_state[0][1]
+        # Choose the state with the minimum total cost to be the new current state
+        current_state = temp_state
 
     return current_state
