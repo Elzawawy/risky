@@ -49,7 +49,7 @@ def greedy_best_first_search(initial_state, heuristic):
     return None
 
 
-def a_star_search(initial_state, heuristic, cost): 
+def a_star_search(initial_state, heuristic, cost):
     """A* search Algorithm is greedy best-first graph search with f(n) = g(n)+h(n).
 
     Keyword arguments:\\
@@ -64,3 +64,40 @@ def a_star_search(initial_state, heuristic, cost):
     * max_search_depth -- Maximum depth reached where goal resides. 
     """
     return greedy_best_first_search(initial_state, cost+heuristic)
+
+
+def real_time_a_star_search(initial_state, heuristic):
+
+    visited_states_to_heuristic = {}
+    tota_cost_to_state = {}
+    current_state = initial_state
+
+    while(not current_state.is_goal()):
+        # Expand the current state
+        for neighbour in current_state.expand():
+
+            # If the neighbour exists in the visited_states dictionary, then stored hurestic value in the dictionary is used
+            # and added to the cost from the current state to the neighbour to get the total cost 
+            if neighbour in visited_states_to_heuristic:
+                neighbour_total_cost = visited_states_to_heuristic[neighbour] + current_state.costTo(neighbour)
+
+            # Else, then calculate the hurestic value of the neighbour
+            # and add it to the cost from the current state to the neighbour to get the total cost
+            else:
+                neighbour_total_cost = heuristic(neighbour) + current_state.costTo(neighbour)
+
+            
+            # If a state with a total cost exists in tota_cost_to_state dictionary, then delete this entry
+            if neighbour_total_cost in tota_cost_to_state:
+                del(tota_cost_to_state[neighbour_total_cost])
+
+            # Else, add the entry (neighbour_total_cost, neighbour) to tota_cost_to_state dictionary
+            else:
+                tota_cost_to_state[neighbour_total_cost] = neighbour
+
+
+        tota_cost_to_state = list(sorted(tota_cost_to_state.keys()))
+        visited_states_to_heuristic[current_state] = tota_cost_to_state[1][0]
+        current_state = tota_cost_to_state[0][1]
+
+    return current_state
