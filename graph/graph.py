@@ -17,16 +17,26 @@ class BaseGraph:
 class RiskGameGraph(BaseGraph):
     def __init__(self, graph_dict):
         super(graph_dict)
+        
+    def reinforce_territory(self, territory, additional_armies):
+        keys = self.adjacency_list.keys()
+        for key in keys:
+            if key.territory_name == territory.name:
+                key.armies_number += additional_armies
 
     def get_owned_territories(self, player_name):
         return [x for x in self.adjacency_list.keys() if x.player_name == player_name]
 
-    def get_territroies_to_attack(self, player_name):
+    def get_attacking_strategy(self, player_name):
+        """
+        returns: dictionary of territories eligibe to attack mapped to the adjacent territories that 
+        it can attack
+        """   
         eligible_to_attack_territories = [x for x in self.get_owned_territories(player_name) if x.number_of_armies > 1 ]
-        territories_with_enemies_to_attack = []
+        attacking_strategy_map = {}
 
         for territory in eligible_to_attack_territories:
-            adjacent_territories =[x for x in self.get_adjacent_nodes(territory) if x.player_name != player_name]
+            adjacent_territories =[x for x in self.get_adjacent_nodes(territory) if x.player_name != player_name and territory.number_of_armies > x.number_of_armies]
             if len(adjacent_territories) > 0:
-                territories_with_enemies_to_attack.append(territory)
-        return territories_with_enemies_to_attack
+                attacking_strategy_map[territory] = adjacent_territories
+        return attacking_strategy_map
