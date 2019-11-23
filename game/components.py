@@ -51,6 +51,34 @@ class RiskGameState:
             reinforcement_combination_states.append(new_state)
         return reinforcement_combination_states
 
+    def _get_attacking_children(self, state):
+        attacking_strategy = state.map.get_attacking_strategy()
+
+        if(len(attacking_strategy) == 0):
+            return [state]
+        
+        eligible_to_attack_armies_enemies_pairs = []
+
+        for key in attacking_strategy.keys():
+            eligible_to_attack_armies_enemies_pairs.extend(
+                [(key, x) for x in attacking_strategy[key]])
+
+        attack_sequence_subsets_pairs = get_subsets(eligible_to_attack_armies_enemies_pairs)
+        children_states = []
+        for subset in attack_sequence_subsets_pairs:
+            if len(subset) == 0:
+                children_states.append(state)
+                continue
+            #TODO validate subset
+            if validate_subset(subset):
+                #TODO attack
+                children_states.extend(get_attacking_children(attack(state, subset)))
+        return children_states    
+
+    def _get_children(self, additional_armies, player_territories):
+        reinforcement_children_states = _get_reinforcment_children(
+            additional_armies, player_territories)
+
     def expand(self, player_name):
         additional_armies = self._get_additional_armies(player_name)
         player_territories = self.map.get_owned_territories(player_name)
