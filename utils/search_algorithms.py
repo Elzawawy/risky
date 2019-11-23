@@ -1,6 +1,5 @@
-from utils.priority_queue import PriorityQueue
+from utils.datastructures.priority_queue import PriorityQueue
 import heapq
-
 
 def greedy_best_first_search(initial_state, heuristic):
     """Greedy Best First Search Algorithm
