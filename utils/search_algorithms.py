@@ -81,12 +81,13 @@ def real_time_a_star_search(initial_state, heuristic, cost):
 
     visited_states_to_heuristic = {}
     current_state = initial_state
-    FIRST_BEST_STATE_INDEX = 1
+    FIRST_BEST_STATE_INDEX = 2
     SECOND_BEST_TOTAL_COST_INDEX = 0
 
     while(not current_state.is_goal()):
 
         tota_cost_to_state = []
+        counter = 0
 
         # Expand the current state
         for neighbour in current_state.expand():
@@ -102,7 +103,8 @@ def real_time_a_star_search(initial_state, heuristic, cost):
                 neighbour_total_cost = heuristic(neighbour) + cost(current_state, neighbour)
 
             # Store the neighbours & their total cost in a min heap 
-            heapq.heappush(tota_cost_to_state, (neighbour_total_cost, neighbour))
+            heapq.heappush(tota_cost_to_state, (neighbour_total_cost, counter, neighbour))
+            counter += 1
 
         temp_state = heapq.heappop(tota_cost_to_state)[FIRST_BEST_STATE_INDEX]
 
