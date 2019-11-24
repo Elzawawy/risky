@@ -1,4 +1,4 @@
-from utils.search_algorithms import real_time_a_star_search
+from utils.search_algorithms import minimax_alpha_beta_pruning
 from game.components import *
 
 if __name__ == "__main__":
@@ -11,4 +11,4 @@ if __name__ == "__main__":
                                  territory3:[territory1]}
 
     initial_state = RiskGameState(territory_neighbours_dict, "Swidan")
-    real_time_a_star_search(initial_state, lambda x: 1, lambda x,y: 1)
+    minimax_alpha_beta_pruning(initial_state, "Swidan", "Mostafa")

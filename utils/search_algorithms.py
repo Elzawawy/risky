@@ -121,11 +121,12 @@ def real_time_a_star_search(initial_state, heuristic, cost):
 
     return current_state
 
-def minimax_alpha_beta_pruning(initial_state):
+def minimax_alpha_beta_pruning(initial_state,current_player_name, opposition_player_name):
     def minimize(state, alpha, beta):
-        state.player_name = "min"
+        state.player_name = opposition_player_name
         if state.is_goal():
-            return None, state.calculate_utility()
+            # state.calculate_utility()
+            return None, 1
 
         minChild, minUtility = None, math.inf
 
@@ -142,9 +143,10 @@ def minimax_alpha_beta_pruning(initial_state):
         return minChild, minUtility
 
     def maximize(state, alpha, beta):
-        state.player_name = "max"
+        state.player_name = current_player_name
         if state.is_goal():
-            return None, state.calculate_utility()
+            state.calculate_utility()
+            return None, 1
 
         maxChild, maxUtility = None, -math.inf
 
