@@ -1,6 +1,7 @@
 from utils.datastructures.priority_queue import PriorityQueue
 from game.components import *
 import heapq
+import math
 
 def greedy_best_first_search(initial_state, heuristic):
     """Greedy Best First Search Algorithm
@@ -119,3 +120,47 @@ def real_time_a_star_search(initial_state, heuristic, cost):
         current_state = temp_state
 
     return current_state
+
+def minimax_alpha_beta_pruning(initial_state):
+    def minimize(state, alpha, beta):
+        state.player_name = "min"
+        if state.is_goal():
+            return None, state.calculate_utility()
+
+        minChild, minUtility = None, math.inf
+
+        for child in state.expand():
+            child, utility = maximize(child, alpha, beta)
+
+            if utility < minUtility:
+                minChild, minUtility = child, utility
+            if minUtility <= alpha:
+                break
+            if minUtility < beta:
+                beta = minUtility
+
+        return minChild, minUtility
+
+    def maximize(state, alpha, beta):
+        state.player_name = "max"
+        if state.is_goal():
+            return None, state.calculate_utility()
+
+        maxChild, maxUtility = None, -math.inf
+
+        for child in state.expand():
+            child, utility = minimize(child, alpha, beta)
+
+            if utility > maxUtility:
+                maxChild, maxUtility = child, utility
+            if maxUtility >= beta:
+                break
+            if maxUtility > alpha:
+                alpha = maxUtility
+
+        return maxChild, maxUtility
+
+    player_name = initial_state.player_name
+    child, utility = maximize(initial_state, -math.inf, math.inf)
+
+    return child
