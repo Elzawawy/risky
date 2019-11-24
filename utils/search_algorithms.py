@@ -1,4 +1,5 @@
 from utils.datastructures.priority_queue import PriorityQueue
+from game.components import *
 import heapq
 
 def greedy_best_first_search(initial_state, heuristic):
@@ -19,7 +20,7 @@ def greedy_best_first_search(initial_state, heuristic):
     frontier.append(initial_state)
     # Build dictionary for O(1) lookups.
     frontier_config = {}
-    frontier_config[tuple(initial_state.config)] = True
+    frontier_config[initial_state] = True
     # Build set of already explored states.
     explored = set()
     # Variables for algorithm evaluation purposes.
@@ -36,9 +37,9 @@ def greedy_best_first_search(initial_state, heuristic):
         nodes_expanded += 1
         for neighbor in state.expand():
             # Add state to explored states if doesn't already exists.
-            if neighbor not in explored and tuple(neighbor.config) not in frontier_config:
+            if neighbor not in explored and neighbor not in frontier_config:
                 frontier.append(neighbor)
-                frontier_config[tuple(neighbor.config)] = True
+                frontier_config[neighbor] = True
                 if neighbor.cost > max_search_depth:
                     max_search_depth = neighbor.cost
             # If state is not explored but in frontier, update it's key if less.
@@ -63,7 +64,7 @@ def a_star_search(initial_state, heuristic, cost):
     * nodes_expanded -- final number of expanded nodes to reach goal.\\
     * max_search_depth -- Maximum depth reached where goal resides. 
     """
-    return greedy_best_first_search(initial_state, cost+heuristic)
+    return greedy_best_first_search(initial_state, lambda x: cost(x)+heuristic(x))
 
 
 def real_time_a_star_search(initial_state, heuristic, cost):
@@ -78,13 +79,17 @@ def real_time_a_star_search(initial_state, heuristic, cost):
             current_state : A state that eventually will be the goal state. 
     """
 
+
+
     visited_states_to_heuristic = {}
     current_state = initial_state
     FIRST_BEST_STATE_INDEX = 2
     SECOND_BEST_TOTAL_COST_INDEX = 0
-
+    i=0
     while(not current_state.is_goal()):
-
+        print(current_state.map.get_owned_territories("Swidan"))
+        print("iteration ",i)
+        i+=1
         tota_cost_to_state = []
         counter = 0
 
@@ -93,7 +98,7 @@ def real_time_a_star_search(initial_state, heuristic, cost):
 
             # If the neighbour exists in the visited_states dictionary, then stored hurestic value in the dictionary is used
             # and added to the cost from the current state to the neighbour to get the total cost 
-            if neighbour in visited_states_to_heuristic:
+            if neighbour in visited_states_to_heuristic.keys():
                 neighbour_total_cost = visited_states_to_heuristic[neighbour] + cost(current_state, neighbour)
 
             # Else, then calculate the hurestic value of the neighbour
