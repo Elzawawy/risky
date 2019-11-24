@@ -2,6 +2,7 @@ from graph import RiskGameGraph
 import math
 import itertools
 from utils.common_utils import get_subsets
+import copy
 
 
 class Territory:
@@ -13,6 +14,9 @@ class Territory:
     def __eq__(self, obj):
         return self.territory_name == obj.territory_name
 
+    def __hash__(self):
+        return hash(self.territory_name)
+
 
 class RiskGameState:
     def __init__(self, territory_neighbours_dict, player_name=None, parent=None, cost=0, depth=0):
@@ -21,10 +25,42 @@ class RiskGameState:
         self.children = []
         self.player_name = player_name
 
-    def __copy__(self):
-        new_instance = type(self)(territory_neighbours_dict,
-                                  player_name, parent, cost, depth)
+    def __deepcopy__(self):
+        new_instance = copy.deepcopy(self)
         return new_instance
+
+    def _get_territory(self, territory):
+        return self.map.get_territory(territory)
+
+    def validate(self, attacking_moves_sequence):
+        attacking_territories_to_armies_number = {}
+
+        for attacking_move in attacking_moves_sequence:
+            attacking_territory = attacking_move[0]
+            enemy_territory = attacking_move[1]
+
+            if not attacking_territory in attacking_territories_to_armies_number.keys():
+                attacking_territories_to_armies_number[attacking_territory] = attacking_territory.number_of_armies
+
+            attacking_armies_number = attacking_territories_to_armies_number[attacking_territory]
+
+            if attacking_armies_number > enemy_territory.number_of_armies:
+                attacking_territories_to_armies_number[attacking_territory] = attacking_armies_number - 1
+            else:
+                return False
+
+        return True
+
+    def attack(self, state, attacking_moves_sequence):
+        new_state = state.__deepcopy__()
+        for attacking_move in attacking_moves_sequence:
+            attacking_territory = new_state._get_territory(attacking_move[0])
+            enemy_territory = new_state._get_territory(attacking_move[1])
+            attacking_territory.number_of_armies -= 1
+            enemy_territory.number_of_armies = 1
+            enemy_territory.owner = attacking_territory.owner
+
+        return new_state
 
     def _get_additional_armies(self, player_name):
         return max(3, math.ceil(len(self.map.get_owned_territories(player_name)) / 3))
@@ -114,10 +150,9 @@ class RiskGameState:
             if len(subset) == 0:
                 children_states.append(state)
                 continue
-            # TODO validate subset
+
             # If the attacking sequence subset is valid, perform it
             if validate_subset(subset):
-                # TODO attack
                 # Add to the children states the result of performing attacking sequence on it
                 children_states.extend(
                     self._get_attacking_children(attack(state, subset)))
@@ -127,9 +162,13 @@ class RiskGameState:
         reinforcement_children_states = self._get_reinforcement_children(
             additional_armies, player_territories)
 
+        childern_states = []
+        for reinforcement_child_state in reinforcement_children_states:
+            childern_states.extend(self._get_attacking_children(reinforcement_child_state))
+            
+        return childern_states
+        
     def expand(self, player_name):
         additional_armies = self._get_additional_armies(player_name)
         player_territories = self.map.get_owned_territories(player_name)
-
-        for visitor in self.action_visitors:
-            visitor.visit(self)
+        self._get_children(additional_armies, player_territories)

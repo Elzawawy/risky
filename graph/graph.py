@@ -67,3 +67,9 @@ class RiskGameGraph(BaseGraph):
             if len(adjacent_territories) > 0:
                 attacking_strategy_map[territory] = adjacent_territories
         return attacking_strategy_map
+        
+    def get_territory(self, territory):
+        for node in self.adjacency_list.keys():
+            if node == territory:
+                return territory
+        return None
