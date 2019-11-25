@@ -3,7 +3,7 @@ from game.components import *
 import heapq
 import math
 
-def greedy_best_first_search(initial_state, heuristic):
+def greedy_best_first_search(initial_state, heuristic, visitor):
     """Greedy Best First Search Algorithm
 
     Keyword arguments:\\
@@ -14,7 +14,7 @@ def greedy_best_first_search(initial_state, heuristic):
     * None in case of no goal found.\\
     * state -- goal state found.\\
     * nodes_expanded -- final number of expanded nodes to reach goal.\\
-    * max_search_depth -- Maximum depth reached where goal resides. 
+    * max_search_depth -- Maximum depth reached where goal resides.
     """
     # Build minimum heap based on heuristic as key.
     frontier = PriorityQueue('min', heuristic)
@@ -36,7 +36,7 @@ def greedy_best_first_search(initial_state, heuristic):
             return (state, nodes_expanded, max_search_depth)
 
         nodes_expanded += 1
-        for neighbor in state.expand():
+        for neighbor in visitor.visit(state):
             # Add state to explored states if doesn't already exists.
             if neighbor not in explored and neighbor not in frontier_config:
                 frontier.append(neighbor)
@@ -51,7 +51,7 @@ def greedy_best_first_search(initial_state, heuristic):
     return None
 
 
-def a_star_search(initial_state, heuristic, cost):
+def a_star_search(initial_state, heuristic, cost, visitor):
     """A* search Algorithm is greedy best-first graph search with f(n) = g(n)+h(n).
 
     Keyword arguments:\\
@@ -63,12 +63,12 @@ def a_star_search(initial_state, heuristic, cost):
     * None in case of no goal found.\\
     * state -- goal state found.\\
     * nodes_expanded -- final number of expanded nodes to reach goal.\\
-    * max_search_depth -- Maximum depth reached where goal resides. 
+    * max_search_depth -- Maximum depth reached where goal resides.
     """
-    return greedy_best_first_search(initial_state, lambda x: cost(x)+heuristic(x))
+    return greedy_best_first_search(initial_state, lambda x: cost(x)+heuristic(x), visitor)
 
 
-def real_time_a_star_search(initial_state, heuristic, cost):
+def real_time_a_star_search(initial_state, heuristic, cost, visitor):
     """ An informed search that used to reduce the execution time of A*.
 
         Args:
@@ -77,7 +77,7 @@ def real_time_a_star_search(initial_state, heuristic, cost):
             cost : A cost function for a state.
 
         Returns:
-            current_state : A state that eventually will be the goal state. 
+            current_state : A state that eventually will be the goal state.
     """
 
 
@@ -95,10 +95,10 @@ def real_time_a_star_search(initial_state, heuristic, cost):
         counter = 0
 
         # Expand the current state
-        for neighbour in current_state.expand():
+        for neighbour in visitor.visit(current_state):
 
             # If the neighbour exists in the visited_states dictionary, then stored hurestic value in the dictionary is used
-            # and added to the cost from the current state to the neighbour to get the total cost 
+            # and added to the cost from the current state to the neighbour to get the total cost
             if neighbour in visited_states_to_heuristic.keys():
                 neighbour_total_cost = visited_states_to_heuristic[neighbour] + cost(current_state, neighbour)
 
@@ -107,7 +107,7 @@ def real_time_a_star_search(initial_state, heuristic, cost):
             else:
                 neighbour_total_cost = heuristic(neighbour) + cost(current_state, neighbour)
 
-            # Store the neighbours & their total cost in a min heap 
+            # Store the neighbours & their total cost in a min heap
             heapq.heappush(tota_cost_to_state, (neighbour_total_cost, counter, neighbour))
             counter += 1
 
@@ -121,7 +121,7 @@ def real_time_a_star_search(initial_state, heuristic, cost):
 
     return current_state
 
-def minimax_alpha_beta_pruning(initial_state,current_player_name, opposition_player_name):
+def minimax_alpha_beta_pruning(initial_state,current_player_name, opposition_player_name, visitor):
     def minimize(state, alpha, beta):
         state.player_name = opposition_player_name
         if state.is_goal():
@@ -130,7 +130,7 @@ def minimax_alpha_beta_pruning(initial_state,current_player_name, opposition_pla
 
         minChild, minUtility = None, math.inf
 
-        for child in state.expand():
+        for child in visitor.visit(state):
             child, utility = maximize(child, alpha, beta)
 
             if utility < minUtility:
@@ -150,7 +150,7 @@ def minimax_alpha_beta_pruning(initial_state,current_player_name, opposition_pla
 
         maxChild, maxUtility = None, -math.inf
 
-        for child in state.expand():
+        for child in visitor.visit(state):
             child, utility = minimize(child, alpha, beta)
 
             if utility > maxUtility:

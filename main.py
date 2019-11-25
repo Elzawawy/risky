@@ -1,5 +1,6 @@
-from utils.search_algorithms import minimax_alpha_beta_pruning
+from utils.search_algorithms import greedy_best_first_search
 from game.components import *
+from game.action_handlers.risk_visitor import RiskVisitor
 
 if __name__ == "__main__":
     territory1 = Territory("ALexandria", "Swidan", 5)
@@ -11,4 +12,4 @@ if __name__ == "__main__":
                                  territory3:[territory1]}
 
     initial_state = RiskGameState(territory_neighbours_dict, "Swidan")
-    minimax_alpha_beta_pruning(initial_state, "Swidan", "Mostafa")
+    greedy_best_first_search(initial_state, lambda x: 1, RiskVisitor())
