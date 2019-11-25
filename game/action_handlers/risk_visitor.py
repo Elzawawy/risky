@@ -3,7 +3,7 @@ from game.action_handlers.actions import reinforce_territory, attack
 
 class RiskVisitor():
     def visit(self, state):
-        additional_armies = state._get_additional_armies(state.player_name)
+        additional_armies = state.get_additional_armies(state.player_name)
         player_territories = state.get_owned_territories(state.player_name)
         return self._get_children(state, additional_armies, player_territories)
 
