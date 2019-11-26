@@ -1,4 +1,4 @@
-import game.agents.BaseAgent
+from game.agents.base_agent import BaseAgent
 
 class PassiveAgent(BaseAgent):
 

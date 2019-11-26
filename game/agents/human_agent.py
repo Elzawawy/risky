@@ -1,10 +1,10 @@
-import game.agents.BaseAgent
+from game.agents.base_agent import BaseAgent
 
 class HumanAgent(BaseAgent):
-    
+
     def __init__(self, player_name):
         super().__init__(player_name)
-    
+
     def place_initial_troops(self, initial_state, num_troops):
         """ Place Initial Troops on board. Executed once at begining of game.
 
@@ -26,9 +26,6 @@ class HumanAgent(BaseAgent):
                 * result_state: The resulting Map State of the game.
         """
         return get_current_state_from_gui()
-    
+
     def get_current_state_from_gui(self):
         raise(NotImplementedError)
-
-
-

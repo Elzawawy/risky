@@ -1,7 +1,7 @@
-import game.agents.BaseAgent
+from game.agents.base_agent import BaseAgent
+
 
 class MinimaxAgent(BaseAgent):
-
     def __init__(self, player_name):
         super().__init__(player_name)
 

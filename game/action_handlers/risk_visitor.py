@@ -3,15 +3,18 @@ from game.action_handlers.actions import reinforce_territory, attack
 import random
 
 class RiskVisitor():
+    def __init__(self, player_name):
+        self.player_name = player_name
+
     def visit(self, state):
-        additional_armies = state.get_additional_armies(state.player_name)
-        player_territories = state.get_owned_territories(state.player_name)
+        additional_armies = state.get_additional_armies(self.player_name)
+        player_territories = state.get_owned_territories(self.player_name)
         children = self._get_children(state, additional_armies, player_territories)
         for child in children:
             child.depth = state.depth + 1
             child.cost = state.cost + 1
             child.parent = state
-            
+
         random.shuffle(children)
         return children
 
@@ -31,7 +34,7 @@ class RiskVisitor():
 
             enemy_territories.add(enemy_territory)
 
-            if not attacking_territory in attacking_territories_to_armies_number.keys():
+            if attacking_territory not in attacking_territories_to_armies_number.keys():
                 attacking_territories_to_armies_number[attacking_territory] = attacking_territory.number_of_armies
 
             attacking_armies_number = attacking_territories_to_armies_number[attacking_territory]
@@ -90,7 +93,7 @@ class RiskVisitor():
         """
         print("in get attacking children")
         # Dictionary of territories eligibe to attack mapped to the enemys' territories
-        attacking_strategy = state.get_attacking_strategy(state.player_name)
+        attacking_strategy = state.get_attacking_strategy(self.player_name)
 
         # Return if there is no enemys' territories to attack
         if(len(attacking_strategy) == 0):

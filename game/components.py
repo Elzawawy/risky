@@ -17,18 +17,17 @@ class Territory:
 
 
 class RiskGameState(BaseGraph):
-    def __init__(self, territory_neighbours_dict, player_name=None, parent=None, cost=0, depth=0):
+    def __init__(self, territory_neighbours_dict, parent=None, cost=0, depth=0):
         super().__init__(territory_neighbours_dict)
         self.map = self.adjacency_list
         self.children = []
-        self.player_name = player_name
         self.parent = parent
         self.cost = cost
         self.depth = depth
         self.cost_function = lambda x: 1
 
     def __deepcopy__(self):
-        new_instance = type(self)(deepcopy(self.map), self.player_name,self.parent, self.cost, self.depth)
+        new_instance = type(self)(deepcopy(self.map), self.parent, self.cost, self.depth)
         return new_instance
 
     def __eq__(self, other):

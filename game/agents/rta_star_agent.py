@@ -1,4 +1,4 @@
-import game.agents.BaseAgent
+from game.agents.base_agent import BaseAgent
 from utils.search_algorithms import real_time_a_star_search
 
 class RTAStarAgent(BaseAgent):
