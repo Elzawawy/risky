@@ -31,6 +31,9 @@ class RiskGameState(BaseGraph):
         new_instance = type(self)(deepcopy(self.map), self.player_name,self.parent, self.cost, self.depth)
         return new_instance
 
+    def utility(self):
+        return len(self.get_owned_territories(self.player_name))
+        
     def get_owned_territories(self, player_name):
         """
             Used to get the territories owned by a player.
@@ -75,7 +78,7 @@ class RiskGameState(BaseGraph):
 
     def is_goal(self):
         print("owned territories ", len(self.get_owned_territories(self.player_name)))
-        return len(self.get_owned_territories(self.player_name)) == 3
+        return len(self.get_owned_territories("Swidan")) == 3 or len(self.get_owned_territories("Mostafa")) == 3
 
     def get_additional_armies(self, player_name):
         return max(3, len(self.get_owned_territories(player_name)) / 3)

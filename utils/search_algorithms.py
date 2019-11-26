@@ -3,6 +3,7 @@ from game.components import *
 import heapq
 import math
 
+
 def greedy_best_first_search(initial_state, heuristic, visitor):
     """Greedy Best First Search Algorithm
 
@@ -80,17 +81,15 @@ def real_time_a_star_search(initial_state, heuristic, cost, visitor):
             current_state : A state that eventually will be the goal state.
     """
 
-
-
     visited_states_to_heuristic = {}
     current_state = initial_state
     FIRST_BEST_STATE_INDEX = 2
     SECOND_BEST_TOTAL_COST_INDEX = 0
-    i=0
+    i = 0
     while(not current_state.is_goal()):
         print(current_state.map.get_owned_territories("Swidan"))
-        print("iteration ",i)
-        i+=1
+        print("iteration ", i)
+        i += 1
         tota_cost_to_state = []
         counter = 0
 
@@ -100,38 +99,61 @@ def real_time_a_star_search(initial_state, heuristic, cost, visitor):
             # If the neighbour exists in the visited_states dictionary, then stored hurestic value in the dictionary is used
             # and added to the cost from the current state to the neighbour to get the total cost
             if neighbour in visited_states_to_heuristic.keys():
-                neighbour_total_cost = visited_states_to_heuristic[neighbour] + cost(current_state, neighbour)
+                neighbour_total_cost = visited_states_to_heuristic[neighbour] + cost(
+                    current_state, neighbour)
 
             # Else, then calculate the hurestic value of the neighbour
             # and add it to the cost from the current state to the neighbour to get the total cost
             else:
-                neighbour_total_cost = heuristic(neighbour) + cost(current_state, neighbour)
+                neighbour_total_cost = heuristic(
+                    neighbour) + cost(current_state, neighbour)
 
             # Store the neighbours & their total cost in a min heap
-            heapq.heappush(tota_cost_to_state, (neighbour_total_cost, counter, neighbour))
+            heapq.heappush(tota_cost_to_state,
+                           (neighbour_total_cost, counter, neighbour))
             counter += 1
 
         temp_state = heapq.heappop(tota_cost_to_state)[FIRST_BEST_STATE_INDEX]
 
         # Store the current state associated with it the second best total cost value
-        visited_states_to_heuristic[current_state] = heapq.heappop(tota_cost_to_state)[SECOND_BEST_TOTAL_COST_INDEX]
+        visited_states_to_heuristic[current_state] = heapq.heappop(
+            tota_cost_to_state)[SECOND_BEST_TOTAL_COST_INDEX]
 
         # Choose the state with the minimum total cost to be the new current state
         current_state = temp_state
 
     return current_state
 
-def minimax_alpha_beta_pruning(initial_state,current_player_name, opposition_player_name, visitor):
+
+def minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_player_name, visitor, utility_function, terminating_test):
+    """ An adverserial search algoritm.\\
+
+        Args:\\
+            initial_state : Starting state of problem.\\
+            current_player_name : The player currently considered as max.\\
+            opposition_player_name : The player currently considered as min.\\
+            visitor: The visitor class to be used to take an action in each
+            node traversed;it has to contain a visit function that takes
+            no arguments\\
+            utility_function: The function that calculates the value of each state to be
+            considered by maximize and minimize.\\
+            terminating_test: A boolean function that checks wether to consider the state as a
+            terminating state and return or not.\\
+
+        Returns:\\
+            child : A state having the maximum utility that can be reached.
+    """
     def minimize(state, alpha, beta):
+        if terminating_test(state):
+            print("goal reached")
+            return None, utility_function(state)
+
         state.player_name = opposition_player_name
-        if state.is_goal():
-            # state.calculate_utility()
-            return None, 1
 
         minChild, minUtility = None, math.inf
 
         for child in visitor.visit(state):
-            child, utility = maximize(child, alpha, beta)
+            dummy_child, utility = maximize(child, alpha, beta)
 
             if utility < minUtility:
                 minChild, minUtility = child, utility
@@ -143,15 +165,16 @@ def minimax_alpha_beta_pruning(initial_state,current_player_name, opposition_pla
         return minChild, minUtility
 
     def maximize(state, alpha, beta):
+        if terminating_test(state):
+            print("goal reached")
+            return None, utility_function(state)
+
         state.player_name = current_player_name
-        if state.is_goal():
-            state.calculate_utility()
-            return None, 1
 
         maxChild, maxUtility = None, -math.inf
 
         for child in visitor.visit(state):
-            child, utility = minimize(child, alpha, beta)
+            dummy_child, utility = minimize(child, alpha, beta)
 
             if utility > maxUtility:
                 maxChild, maxUtility = child, utility
@@ -162,7 +185,11 @@ def minimax_alpha_beta_pruning(initial_state,current_player_name, opposition_pla
 
         return maxChild, maxUtility
 
-    player_name = initial_state.player_name
     child, utility = maximize(initial_state, -math.inf, math.inf)
-
+    print("goal ", len(child.get_owned_territories("Swidan")),
+          len(child.get_owned_territories("Mostafa")))
     return child
+
+
+def real_time_minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_player_name, visitor, utility_function, cutoff_test):
+    return minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_player_name, visitor, utility_function, cutoff_test)
