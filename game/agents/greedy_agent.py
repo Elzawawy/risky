@@ -4,8 +4,6 @@ from utils.search_algorithms import greedy_best_first_search
 class GreedyAgent(BaseAgent):
     def __init__(self,player_name):
         super().__init__(player_name)
-        # TODO: Should either send Heuristic Function as input here or Import it from file.
-        self.heuristic = heuristic
 
     def place_initial_troops(self, initial_state, num_troops):
         """ Place Initial Troops on board. Executed once at begining of game.

@@ -5,8 +5,6 @@ class AStarAgent(BaseAgent):
 
     def __init__(self,player_name):
         super().__init__(player_name)
-        # TODO: Should either send Cost Function as input here or Import it from file.
-        self.cost = cost
 
     def place_initial_troops(self, initial_state, num_troops):
         """ Place Initial Troops on board. Executed once at begining of game.
