@@ -12,12 +12,11 @@ class BaseAgent(ABC):
         super().__init__()
 
     @abstractmethod
-    def place_initial_troops(self, initial_state, num_troops):
-        """ Place Initial Troops on board. Executed once at begining of game.
+    def place_initial_armies(self, initial_state):
+        """ Place Initial Armies on board. Executed once at begining of game.
 
             Arguments:\\
                 * current_state: The current Map State of the game.\\
-                * num_troops: The number of troops to reinforce with.\\
             Returns:\\
                 * result_state: The resulting Map State of the game.
         """

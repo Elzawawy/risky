@@ -11,7 +11,7 @@ def attack(state, attacking_moves_sequence):
         if attacking_territory.number_of_armies <= 0 or enemy_territory.number_of_armies <= 0 :
             raise(ValueError("Not valid attack move sequence"))
         enemy_territory.owner = attacking_territory.owner
-    print("owned terrirories after attacking",len(new_state.get_owned_territories(new_state.player_name)))
+    print("owned territories after attacking",len(new_state.get_owned_territories(attacking_territory.owner)))
     return new_state
 
 def reinforce_territory(state, territory, additional_armies):

@@ -3,11 +3,11 @@ from utils.search_algorithms import real_time_a_star_search
 from game.components import *
 from game.action_handlers.risk_visitor import RiskVisitor
 from game.game import RiskGame
-from game.agents.aggressive_agent import AggressiveAgent
+from game.agents.pacifist_agent import PacifistAgent
 
 if __name__ == "__main__":
 
-    risk_game = RiskGame()
+    #risk_game = RiskGame()
 
     territory1 = Territory("ALexandria", "Swidan", 5)
     territory2 = Territory("Cairo", "Swidan", 4)
@@ -26,4 +26,4 @@ if __name__ == "__main__":
     #                             RiskVisitor(), risk_game.utility,
     #                             risk_game.cutoff_test_using_depth(100))
 
-    AggressiveAgent("Swidan").take_turn(initial_state)
+    PacifistAgent("Swidan").take_turn(initial_state)

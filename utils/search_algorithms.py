@@ -54,33 +54,35 @@ def greedy_best_first_search(initial_state, is_goal, heuristic, visitor):
     return None
 
 
-def a_star_search(initial_state, is_goal, heuristic, visitor):
+def a_star_search(initial_state, goal_test, heuristic, visitor):
     """A* search Algorithm is greedy best-first graph search with f(n) = g(n)+h(n).
 
-    Keyword arguments:\\
-    * initial_state -- starting state of problem.\\
-    * heuristic -- a heuristic estimate to goal h(n)\\
-    * cost -- a cost function for a state.
+        Args:
+        - initial_state -- starting state of problem.
+        - goal_test -- Goal test function employed in environment.
+        - heuristic -- a heuristic estimate to goal h(n)
+        - visitor -- a visitor attached with agent, to ensure layer separation.
 
-    Return variables:\\
-    * None in case of no goal found.\\
-    * state -- goal state found.\\
-    * nodes_expanded -- final number of expanded nodes to reach goal.\\
-    * max_search_depth -- Maximum depth reached where goal resides.
+        Returns:
+        - None in case of no goal found.
+        - state -- goal state found.
+        - nodes_expanded -- final number of expanded nodes to reach goal.
+        - max_search_depth -- Maximum depth reached where goal resides.
     """
-    return greedy_best_first_search(initial_state, is_goal, lambda x: x.cost_from_root() + heuristic(x), visitor)
+    return greedy_best_first_search(initial_state, goal_test, lambda x: x.cost + heuristic(x), visitor)
 
 
-def real_time_a_star_search(initial_state, is_goal, heuristic, visitor):
+def real_time_a_star_search(initial_state, goal_test, heuristic, visitor):
     """ An informed search that used to reduce the execution time of A*.
 
         Args:
-            initial_state : Starting state of problem.
-            heuristic : A heuristic estimate to goal h(n).
-            cost : A cost function for a state.
+        - initial_state : Starting state of problem.
+        - heuristic : A heuristic estimate to goal h(n).
+        - cost -- A cost function for a state.
+        - visitor -- a visitor attached with agent, to ensure layer separation. 
 
         Returns:
-            current_state : A state that eventually will be the goal state.
+        - current_state : A state that eventually will be the goal state.
     """
 
     visited_states_to_heuristic = {}
@@ -89,7 +91,7 @@ def real_time_a_star_search(initial_state, is_goal, heuristic, visitor):
     SECOND_BEST_TOTAL_COST_INDEX = 0
     seed(1)
     i = 0
-    while(not is_goal(current_state)):
+    while(not (current_state)):
         print(current_state.get_owned_territories("Swidan"))
         print("iteration ", i)
         i += 1
@@ -125,31 +127,29 @@ def real_time_a_star_search(initial_state, is_goal, heuristic, visitor):
     return current_state
 
 
-def minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_player_name, visitor, utility_function, terminating_test):
-    """ An adverserial search algoritm.\\
+def minimax_alpha_beta_pruning(initial_state, player_name, opponent_name, utility_function, terminating_test, visitor):
+    """ An adverserial search algorithm.
 
-        Args:\\
-            initial_state : Starting state of problem.\\
-            current_player_name : The player currently considered as max.\\
-            opposition_player_name : The player currently considered as min.\\
-            visitor: The visitor class to be used to take an action in each
-            node traversed;it has to contain a visit function that takes
-            no arguments\\
-            utility_function: The function that calculates the value of each state to be
-            considered by maximize and minimize.\\
-            terminating_test: A boolean function that checks wether to consider the state as a
-            terminating state and return or not.\\
-
-        Returns:\\
-            child : A state having the maximum utility that can be reached.
+        Args:
+        - initial_state -- Starting state of problem.
+        - player_name -- The player currently considered as max.
+        - opponent_name -- The player currently considered as min.
+        - utility_function -- The function that calculates the value of each state to be
+            considered by maximize and minimize.
+        - terminating_test -- A boolean function that checks wether to consider the state as a
+            terminating state and return or not.
+        - visitor: The visitor class to be used to take an action in each
+            node traversed;it has to contain a visit function that takes no arguments
+            
+        Returns:
+        - child : A state having the maximum utility that can be reached.
     """
     def minimize(state, alpha, beta):
         if terminating_test(state):
             print("goal reached")
             return None, utility_function(state)
 
-        visitor.player_name = opposition_player_name
-
+        visitor.player_name = opponent_name
         minChild, minUtility = None, math.inf
 
         for child in visitor.visit(state):
@@ -169,8 +169,7 @@ def minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_pl
             print("goal reached")
             return None, utility_function(state)
 
-        visitor.player_name = current_player_name
-
+        visitor.player_name = player_name
         maxChild, maxUtility = None, -math.inf
 
         for child in visitor.visit(state):
@@ -191,5 +190,21 @@ def minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_pl
     return child
 
 
-def real_time_minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_player_name, visitor, utility_function, cutoff_test):
-    return minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_player_name, visitor, utility_function, cutoff_test)
+def real_time_minimax_alpha_beta_pruning(initial_state, player_name, opponent_name, utility_function, cutoff_test, visitor):
+    """ An adverserial search algorithm.
+
+        Args:
+        - initial_state -- Starting state of problem.
+        - player_name -- The player currently considered as max.
+        - opponent_name -- The player currently considered as min.
+        - utility_function -- The function that calculates the value of each state to be
+            considered by maximize and minimize.
+        - terminating_test -- A boolean function that checks wether to consider the state as a
+            terminating state and return or not.
+        - visitor: The visitor class to be used to take an action in each
+            node traversed;it has to contain a visit function that takes no arguments
+            
+        Returns:
+        - child : A state having the maximum utility that can be reached.
+    """
+    return minimax_alpha_beta_pruning(initial_state, player_name, opponent_name, utility_function, cutoff_test, visitor)
