@@ -1,9 +1,8 @@
 from game.agents.base_agent import BaseAgent
-import operator
 from game.action_handlers.actions import reinforce_territory
 from random import seed
 from random import randint
-
+import operator
 
 class PassiveAgent(BaseAgent):
 

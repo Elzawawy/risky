@@ -3,6 +3,7 @@ from utils.search_algorithms import real_time_a_star_search
 from game.components import *
 from game.action_handlers.risk_visitor import RiskVisitor
 from game.game import RiskGame
+from game.agents.aggressive_agent import AggressiveAgent
 
 if __name__ == "__main__":
 
@@ -21,6 +22,8 @@ if __name__ == "__main__":
     # minimax_alpha_beta_pruning(initial_state, "Swidan", "Mostafa",
     #                            RiskVisitor(), risk_game.utility,
     #                             risk_game.is_goal)
-    real_time_minimax_alpha_beta_pruning(initial_state, "Swidan", "Mostafa",
-                               RiskVisitor(), risk_game.utility,
-                                risk_game.cutoff_test_using_depth(100))
+    # real_time_minimax_alpha_beta_pruning(initial_state, "Swidan", "Mostafa",
+    #                             RiskVisitor(), risk_game.utility,
+    #                             risk_game.cutoff_test_using_depth(100))
+
+    AggressiveAgent("Swidan").take_turn(initial_state)

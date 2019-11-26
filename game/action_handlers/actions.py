@@ -1,9 +1,11 @@
 
 def attack(state, attacking_moves_sequence):
     new_state = state.__deepcopy__()
+    ATTACKING_TERRITORY_INDEX = 0
+    ENEMY_TERRITORY_INDEX = 1
     for attacking_move in attacking_moves_sequence:
-        attacking_territory = new_state.get_territory(attacking_move[0])
-        enemy_territory = new_state.get_territory(attacking_move[1])
+        attacking_territory = new_state.get_territory(attacking_move[ATTACKING_TERRITORY_INDEX])
+        enemy_territory = new_state.get_territory(attacking_move[ENEMY_TERRITORY_INDEX])
         attacking_territory.number_of_armies -= 1
         enemy_territory.number_of_armies = 1
         if attacking_territory.number_of_armies <= 0 or enemy_territory.number_of_armies <= 0 :
