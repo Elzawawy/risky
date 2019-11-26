@@ -53,7 +53,6 @@ def greedy_best_first_search(initial_state, is_goal, heuristic, visitor):
                     frontier.append(neighbor)
     return None
 
-
 def a_star_search(initial_state, goal_test, heuristic, visitor):
     """A* search Algorithm is greedy best-first graph search with f(n) = g(n)+h(n).
 
