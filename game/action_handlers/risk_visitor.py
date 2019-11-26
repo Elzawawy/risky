@@ -10,10 +10,18 @@ class RiskVisitor():
     def _validate_subset(self, attacking_moves_sequence):
         print("in validate_subset ", attacking_moves_sequence)
         attacking_territories_to_armies_number = {}
+        enemy_territories = set()
+        ATTACKING_TERRITORY_INDEX = 0
+        ENEMY_TERRITORY_INDEX = 1
 
         for attacking_move in attacking_moves_sequence:
-            attacking_territory = attacking_move[0]
-            enemy_territory = attacking_move[1]
+            attacking_territory = attacking_move[ATTACKING_TERRITORY_INDEX]
+            enemy_territory = attacking_move[ENEMY_TERRITORY_INDEX]
+
+            if(enemy_territory in enemy_territories):
+                return False
+
+            enemy_territories.add(enemy_territory)
 
             if not attacking_territory in attacking_territories_to_armies_number.keys():
                 attacking_territories_to_armies_number[attacking_territory] = attacking_territory.number_of_armies
@@ -67,7 +75,7 @@ class RiskVisitor():
 
             Args:
                 state: A state after appling reinforcement step on it on the first call only
-                then it's after recusrsion an attack state.
+                then it's after recursion an attack state.
 
             Returns:
                 List of all possible children states after applying the territories attacking step.
@@ -115,8 +123,8 @@ class RiskVisitor():
         reinforcement_children_states = self._get_reinforcement_children(state,
             additional_armies, player_territories)
 
-        childern_states = []
+        children_states = []
         for reinforcement_child_state in reinforcement_children_states:
-            childern_states.extend(self._get_attacking_children(reinforcement_child_state))
+            children_states.extend(self._get_attacking_children(reinforcement_child_state))
 
-        return childern_states
+        return children_states
