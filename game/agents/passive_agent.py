@@ -19,9 +19,11 @@ class PassiveAgent(BaseAgent):
             Returns:\\
                 * result_state: The resulting Map State of the game.
         """
-        # TODO: Should call here random_initial_reinforcement()
         seed(1)
+        # Get all owned territories
         owned_territories = initial_state.get_owned_territories(self.player_name)
+
+        # Add one army to a random territory
         owned_territories[randint(0, len(owned_territories) - 1)].number_of_armies += 1
 
     def take_turn(self, current_state):
@@ -32,8 +34,6 @@ class PassiveAgent(BaseAgent):
             Returns:\\
                 * result_state: The resulting Map State of the game.
         """
-        # TODO: Should act upon goal_state to return action to be done in game.
-        # TODO: return next_state
         return self.passive_strategy(current_state)
 
     def passive_strategy(self, current_state):
