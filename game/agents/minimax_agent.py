@@ -1,11 +1,19 @@
 from game.agents.base_agent import BaseAgent
+<<<<<<< HEAD
 from random import seed
 from random import randint
 
+=======
+from utils.search_algorithms import real_time_minimax_alpha_beta_pruning
+from game.action_handlers.risk_visitor import RiskVisitor
+from utils.common_utils import back_track_path
+>>>>>>> master
 
 class MinimaxAgent(BaseAgent):
-    def __init__(self, player_name):
+    def __init__(self, player_name, opponent_name):
         super().__init__(player_name)
+        self.opponent_name = opponent_name
+        self.visitor = RiskVisitor(player_name)
 
     def place_initial_armies(self, initial_state):
         """ Place Initial Armies on board. Executed once at begining of game.
@@ -25,12 +33,18 @@ class MinimaxAgent(BaseAgent):
         owned_territories[randint(
             0, len(owned_territories) - 1)].number_of_armies += ARMIES_NUMBER
 
-    def take_turn(self, current_state):
+    def take_turn(self, current_state, heuristic, utility, cutoff_test):
         """ Take Turn in game. Executed each turn on agents.
 
             Arguments:\\
                 * current_state: The current Map State of the game.\\
+                * heuristic: The Game heuristic employed in our RISK.\\
+                * utility: The utility function for minimax algorithm employed in our RISK.\\
+                * cutoff_test: the cutoff for real time minimax algorithm employed in our RISK.\\
             Returns:\\
-                * result_state: The resulting Map State of the game.
+                * result_state: The resulting Map State of the game that should be played.
         """
-        raise(NotImplementedError)
+        current_state.parent = None
+        goal_state = real_time_minimax_alpha_beta_pruning(current_state, self.player_name,
+            self.opponent_name, heuristic, utility, cutoff_test,  self.visitor)
+        return back_track_path(goal_state)[0]
