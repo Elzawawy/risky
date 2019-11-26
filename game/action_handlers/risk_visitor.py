@@ -1,11 +1,19 @@
 from utils.common_utils import get_subsets, partitions
 from game.action_handlers.actions import reinforce_territory, attack
+import random
 
 class RiskVisitor():
     def visit(self, state):
         additional_armies = state.get_additional_armies(state.player_name)
         player_territories = state.get_owned_territories(state.player_name)
-        return self._get_children(state, additional_armies, player_territories)
+        children = self._get_children(state, additional_armies, player_territories)
+        for child in children:
+            child.depth = state.depth + 1
+            child.cost = state.cost + 1
+            child.parent = state
+            
+        random.shuffle(children)
+        return children
 
     def _validate_subset(self, attacking_moves_sequence):
         print("in validate_subset ", attacking_moves_sequence)
