@@ -1,5 +1,6 @@
 from game.agents.base_agent import BaseAgent
 from utils.search_algorithms import real_time_a_star_search
+from utils.common_utils import back_track_path
 
 class RTAStarAgent(BaseAgent):
 
@@ -23,10 +24,10 @@ class RTAStarAgent(BaseAgent):
 
             Arguments:\\
                 * current_state: The current Map State of the game.\\
+                * heuristic: The Game heuristic employed in our RISK.\\
             Returns:\\
-                * result_state: The resulting Map State of the game.
+                * result_state: The resulting Map State of the game that should be played.
         """
+        current_state.parent = None
         goal_state = real_time_a_star_search(current_state, heuristic, current_state.cost)
-        # TODO: Should act upon goal_state to return action to be done in game.
-        # TODO: return next_state
-        raise(NotImplementedError)
+        return back_track_path(goal_state)[0]
