@@ -31,6 +31,20 @@ class RiskGameState(BaseGraph):
         new_instance = type(self)(deepcopy(self.map), self.player_name,self.parent, self.cost, self.depth)
         return new_instance
 
+    def __eq__(self, other):
+        other_map_keys = {x.territory_name: x for x in other.map.keys()}
+        for key in self.map.keys():
+            other_key = other_map_keys[key.territory_name]
+            if key.number_of_armies != other_key.number_of_armies or key.owner != other_key.owner:
+                return False
+        return True
+
+    def __hash__(self):
+        hash_value = 0
+        for key in self.map.keys():
+            hash_value = hash_value ^ hash((key, key.owner, key.number_of_armies))
+        return hash_value
+
     def get_owned_territories(self, player_name):
         """
             Used to get the territories owned by a player.
@@ -72,14 +86,15 @@ class RiskGameState(BaseGraph):
                 return node
         return None
 
-
-    def is_goal(self):
-        print("owned territories ", len(self.get_owned_territories(self.player_name)))
-        return len(self.get_owned_territories(self.player_name)) == 3
-
     def get_additional_armies(self, player_name):
         return max(3, len(self.get_owned_territories(player_name)) / 3)
 
+    def cost_from_root(self):
+        return self.cost
+
+    def cost_to(self, state):
+        # TODO: change it to calculate a cost from the self state to the other state
+        return 1
 
     def __lt__(self, other):
         return self.cost_function(self) < self.cost_function(other)
