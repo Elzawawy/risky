@@ -148,7 +148,7 @@ def minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_pl
             print("goal reached")
             return None, utility_function(state)
 
-        state.player_name = opposition_player_name
+        visitor.player_name = opposition_player_name
 
         minChild, minUtility = None, math.inf
 
@@ -169,7 +169,7 @@ def minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_pl
             print("goal reached")
             return None, utility_function(state)
 
-        state.player_name = current_player_name
+        visitor.player_name = current_player_name
 
         maxChild, maxUtility = None, -math.inf
 

@@ -44,6 +44,10 @@ class PassiveAgent(BaseAgent):
             Returns:\\
                 * result_state: The resulting Map State of the game.
         """
+<<<<<<< HEAD
+        #TODO: Build Aggressive Solution and return result.
+        raise(NotImplementedError)
+=======
         # Retrieve the player owned territories
         player_owned_territories = current_state.get_owned_territories(self.player_name)
 
@@ -55,5 +59,6 @@ class PassiveAgent(BaseAgent):
 
         # Reinforce the territory with the fewest number of armies with the additional armies
         reinforce_territory(current_state, territory_with_fewest_armies,current_state.get_additional_armies(self.player_name))
-        
+
         return current_state
+>>>>>>> f5765f0090da3a3bcdce7fe623d087aadbc62589

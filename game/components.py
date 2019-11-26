@@ -17,18 +17,18 @@ class Territory:
 
 
 class RiskGameState(BaseGraph):
-    def __init__(self, territory_neighbours_dict, player_name=None, parent=None, cost=0, depth=0):
+    def __init__(self, territory_neighbours_dict, parent=None, cost=0, depth=0):
         super().__init__(territory_neighbours_dict)
         self.map = self.adjacency_list
         self.children = []
-        self.player_name = player_name
         self.parent = parent
         self.cost = cost
         self.depth = depth
         self.cost_function = lambda x: 1
 
+
     def __deepcopy__(self):
-        new_instance = type(self)(deepcopy(self.map), self.player_name,self.parent, self.cost, self.depth)
+        new_instance = type(self)(deepcopy(self.map), self.parent, self.cost, self.depth)
         return new_instance
 
     def __eq__(self, other):
@@ -89,12 +89,13 @@ class RiskGameState(BaseGraph):
     def get_additional_armies(self, player_name):
         return max(3, len(self.get_owned_territories(player_name)) / 3)
 
-    def cost_from_root(self):
-        return self.cost
-
     def cost_to(self, state):
         # TODO: change it to calculate a cost from the self state to the other state
         return 1
+
+    def get_attacking_enemies(self, territory, player_name):
+        return [x for x in self.get_adjacent_nodes(territory) 
+        if x.owner != player_name and territory.number_of_armies < x.number_of_armies]
 
     def __lt__(self, other):
         return self.cost_function(self) < self.cost_function(other)
