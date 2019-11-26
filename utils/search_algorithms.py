@@ -125,17 +125,35 @@ def real_time_a_star_search(initial_state, is_goal, heuristic, visitor):
     return current_state
 
 
-def minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_player_name, visitor):
+def minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_player_name, visitor, utility_function, terminating_test):
+    """ An adverserial search algoritm.\\
+
+        Args:\\
+            initial_state : Starting state of problem.\\
+            current_player_name : The player currently considered as max.\\
+            opposition_player_name : The player currently considered as min.\\
+            visitor: The visitor class to be used to take an action in each
+            node traversed;it has to contain a visit function that takes
+            no arguments\\
+            utility_function: The function that calculates the value of each state to be
+            considered by maximize and minimize.\\
+            terminating_test: A boolean function that checks wether to consider the state as a
+            terminating state and return or not.\\
+
+        Returns:\\
+            child : A state having the maximum utility that can be reached.
+    """
     def minimize(state, alpha, beta):
-        state.player_name = opposition_player_name
-        if state.is_goal():
-            # state.calculate_utility()
-            return None, 1
+        if terminating_test(state):
+            print("goal reached")
+            return None, utility_function(state)
+
+        visitor.player_name = opposition_player_name
 
         minChild, minUtility = None, math.inf
 
         for child in visitor.visit(state):
-            child, utility = maximize(child, alpha, beta)
+            dummy_child, utility = maximize(child, alpha, beta)
 
             if utility < minUtility:
                 minChild, minUtility = child, utility
@@ -147,15 +165,16 @@ def minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_pl
         return minChild, minUtility
 
     def maximize(state, alpha, beta):
-        state.player_name = current_player_name
-        if state.is_goal():
-            state.calculate_utility()
-            return None, 1
+        if terminating_test(state):
+            print("goal reached")
+            return None, utility_function(state)
+
+        visitor.player_name = current_player_name
 
         maxChild, maxUtility = None, -math.inf
 
         for child in visitor.visit(state):
-            child, utility = minimize(child, alpha, beta)
+            dummy_child, utility = minimize(child, alpha, beta)
 
             if utility > maxUtility:
                 maxChild, maxUtility = child, utility
@@ -166,7 +185,11 @@ def minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_pl
 
         return maxChild, maxUtility
 
-    player_name = initial_state.player_name
     child, utility = maximize(initial_state, -math.inf, math.inf)
-
+    print("goal ", len(child.get_owned_territories("Swidan")),
+          len(child.get_owned_territories("Mostafa")))
     return child
+
+
+def real_time_minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_player_name, visitor, utility_function, cutoff_test):
+    return minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_player_name, visitor, utility_function, cutoff_test)

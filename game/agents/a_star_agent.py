@@ -1,8 +1,8 @@
-import game.agents.BaseAgent
+from game.agents.base_agent import BaseAgent
 from utils.search_algorithms import a_star_search
 
 class AStarAgent(BaseAgent):
-    
+
     def __init__(self,player_name):
         super().__init__(player_name)
         # TODO: Should either send Cost Function as input here or Import it from file.

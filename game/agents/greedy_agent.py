@@ -1,4 +1,4 @@
-import game.agents.BaseAgent
+from game.agents.base_agent import BaseAgent
 from utils.search_algorithms import greedy_best_first_search
 
 class GreedyAgent(BaseAgent):
