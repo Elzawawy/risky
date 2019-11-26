@@ -1,9 +1,12 @@
 from utils.datastructures.priority_queue import PriorityQueue
 from game.components import *
+from random import seed
+from random import random
 import heapq
 import math
 
-def greedy_best_first_search(initial_state, heuristic, visitor):
+
+def greedy_best_first_search(initial_state, is_goal, heuristic, visitor):
     """Greedy Best First Search Algorithm
 
     Keyword arguments:\\
@@ -32,7 +35,7 @@ def greedy_best_first_search(initial_state, heuristic, visitor):
         state = frontier.pop()
         explored.add(state)
         # Goal Test: stop algorithm when goal is reached.
-        if state.is_goal():
+        if is_goal(state):
             return (state, nodes_expanded, max_search_depth)
 
         nodes_expanded += 1
@@ -51,7 +54,7 @@ def greedy_best_first_search(initial_state, heuristic, visitor):
     return None
 
 
-def a_star_search(initial_state, heuristic, cost, visitor):
+def a_star_search(initial_state, is_goal, heuristic, visitor):
     """A* search Algorithm is greedy best-first graph search with f(n) = g(n)+h(n).
 
     Keyword arguments:\\
@@ -65,10 +68,10 @@ def a_star_search(initial_state, heuristic, cost, visitor):
     * nodes_expanded -- final number of expanded nodes to reach goal.\\
     * max_search_depth -- Maximum depth reached where goal resides.
     """
-    return greedy_best_first_search(initial_state, lambda x: cost(x)+heuristic(x), visitor)
+    return greedy_best_first_search(initial_state, is_goal, lambda x: x.cost_from_root() + heuristic(x), visitor)
 
 
-def real_time_a_star_search(initial_state, heuristic, cost, visitor):
+def real_time_a_star_search(initial_state, is_goal, heuristic, visitor):
     """ An informed search that used to reduce the execution time of A*.
 
         Args:
@@ -80,48 +83,49 @@ def real_time_a_star_search(initial_state, heuristic, cost, visitor):
             current_state : A state that eventually will be the goal state.
     """
 
-
-
     visited_states_to_heuristic = {}
     current_state = initial_state
     FIRST_BEST_STATE_INDEX = 2
     SECOND_BEST_TOTAL_COST_INDEX = 0
-    i=0
-    while(not current_state.is_goal()):
-        print(current_state.map.get_owned_territories("Swidan"))
-        print("iteration ",i)
-        i+=1
-        tota_cost_to_state = []
-        counter = 0
+    seed(1)
+    i = 0
+    while(not is_goal(current_state)):
+        print(current_state.get_owned_territories("Swidan"))
+        print("iteration ", i)
+        i += 1
+        total_cost_to_state = []
 
         # Expand the current state
         for neighbour in visitor.visit(current_state):
 
-            # If the neighbour exists in the visited_states dictionary, then stored hurestic value in the dictionary is used
+            # If the neighbour exists in the visited_states dictionary, then stored heuristic value in the dictionary is used
             # and added to the cost from the current state to the neighbour to get the total cost
             if neighbour in visited_states_to_heuristic.keys():
-                neighbour_total_cost = visited_states_to_heuristic[neighbour] + cost(current_state, neighbour)
+                neighbour_total_cost = visited_states_to_heuristic[neighbour] + current_state.cost_to(neighbour)
 
-            # Else, then calculate the hurestic value of the neighbour
+            # Else, then calculate the heuristic value of the neighbour
             # and add it to the cost from the current state to the neighbour to get the total cost
             else:
-                neighbour_total_cost = heuristic(neighbour) + cost(current_state, neighbour)
+                neighbour_total_cost = heuristic(neighbour) + current_state.cost_to(neighbour)
 
             # Store the neighbours & their total cost in a min heap
-            heapq.heappush(tota_cost_to_state, (neighbour_total_cost, counter, neighbour))
-            counter += 1
+            # Use random() for tie breaking
+            heapq.heappush(total_cost_to_state,
+                           (neighbour_total_cost, random(), neighbour))
 
-        temp_state = heapq.heappop(tota_cost_to_state)[FIRST_BEST_STATE_INDEX]
+        temp_state = heapq.heappop(total_cost_to_state)[FIRST_BEST_STATE_INDEX]
 
         # Store the current state associated with it the second best total cost value
-        visited_states_to_heuristic[current_state] = heapq.heappop(tota_cost_to_state)[SECOND_BEST_TOTAL_COST_INDEX]
+        visited_states_to_heuristic[current_state] = heapq.heappop(
+            total_cost_to_state)[SECOND_BEST_TOTAL_COST_INDEX]
 
         # Choose the state with the minimum total cost to be the new current state
         current_state = temp_state
 
     return current_state
 
-def minimax_alpha_beta_pruning(initial_state,current_player_name, opposition_player_name, visitor):
+
+def minimax_alpha_beta_pruning(initial_state, current_player_name, opposition_player_name, visitor):
     def minimize(state, alpha, beta):
         state.player_name = opposition_player_name
         if state.is_goal():
