@@ -4,17 +4,17 @@ class RiskGame:
         self.agent2 = agent2
         self.board = board
         self.turn = 0
-        self.agents = {0: agent1, 1: agent2}
+        self.agent_names = {0: agent1.player_name, 1: agent2.player_name}
 
     def is_goal(self, state):
         # print("owned territories ", len(state.get_owned_territories(state.player_name)))
-        return len(state.get_owned_territories(agent1.player_name)) == 3
+        return len(state.get_owned_territories(self.agent_names[self.turn])) == 3
 
     def heuristic(self, state):
         sum_enemy_amount_of_units = 0
         sum_border_security_ratio = 0
-        for owned_territory in state.get_owned_territories(agents[turn]):
-            for enemy_territory in state.get_attacking_enemies(owned_territory, agents[turn]):
+        for owned_territory in state.get_owned_territories(self.agent_names[self.turn]):
+            for enemy_territory in state.get_attacking_enemies(owned_territory, self.agent_names[self.turn]):
                 sum_enemy_amount_of_units += enemy_territory.number_of_armies
             sum_border_security_ratio += sum_enemy_amount_of_units * 1.0 / owned_territory.number_of_armies
             sum_enemy_amount_of_units = 0
