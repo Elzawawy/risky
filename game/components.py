@@ -100,3 +100,8 @@ class RiskGameState(BaseGraph):
 
     def __le__(self, other):
         return self.cost_function(self) <= self.cost_function(other)
+
+    def to_json(self):
+        map_json_object = []
+        for territory in self.map.keys():
+            map_json_object.append({"name":territory.territory_name, "owner": territory.owner, "number_of_armies":territory.number_of_armies})
