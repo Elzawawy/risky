@@ -1,15 +1,17 @@
 
 def attack(state, attacking_moves_sequence):
     new_state = state.__deepcopy__()
+    ATTACKING_TERRITORY_INDEX = 0
+    ENEMY_TERRITORY_INDEX = 1
     for attacking_move in attacking_moves_sequence:
-        attacking_territory = new_state.get_territory(attacking_move[0])
-        enemy_territory = new_state.get_territory(attacking_move[1])
+        attacking_territory = new_state.get_territory(attacking_move[ATTACKING_TERRITORY_INDEX])
+        enemy_territory = new_state.get_territory(attacking_move[ENEMY_TERRITORY_INDEX])
         attacking_territory.number_of_armies -= 1
         enemy_territory.number_of_armies = 1
         if attacking_territory.number_of_armies <= 0 or enemy_territory.number_of_armies <= 0 :
             raise(ValueError("Not valid attack move sequence"))
         enemy_territory.owner = attacking_territory.owner
-    print("owned terrirories after attacking",len(new_state.get_owned_territories(new_state.player_name)))
+    print("owned territories after attacking",len(new_state.get_owned_territories(attacking_territory.owner)))
     return new_state
 
 def reinforce_territory(state, territory, additional_armies):
