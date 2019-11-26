@@ -1,13 +1,10 @@
 from game.agents.base_agent import BaseAgent
-<<<<<<< HEAD
-from random import seed
-from random import randint
-
-=======
 from utils.search_algorithms import real_time_minimax_alpha_beta_pruning
 from game.action_handlers.risk_visitor import RiskVisitor
 from utils.common_utils import back_track_path
->>>>>>> master
+from random import seed
+from random import randint
+
 
 class MinimaxAgent(BaseAgent):
     def __init__(self, player_name, opponent_name):
@@ -17,7 +14,7 @@ class MinimaxAgent(BaseAgent):
 
     def place_initial_armies(self, initial_state):
         """ Place Initial Armies on board. Executed once at begining of game.
-        
+
             Arguments:\\
                 * current_state: The current Map State of the game.\\
             Returns:\\
@@ -46,5 +43,5 @@ class MinimaxAgent(BaseAgent):
         """
         current_state.parent = None
         goal_state = real_time_minimax_alpha_beta_pruning(current_state, self.player_name,
-            self.opponent_name, heuristic, utility, cutoff_test,  self.visitor)
+                                                          self.opponent_name, utility, cutoff_test,  self.visitor)
         return back_track_path(goal_state)[0]

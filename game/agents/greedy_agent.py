@@ -8,7 +8,7 @@ from random import randint
 class GreedyAgent(BaseAgent):
     def __init__(self,player_name):
         super().__init__(player_name)
-        self.visitor = RiskVisitor()
+        self.visitor = RiskVisitor(player_name)
 
     def place_initial_armies(self, initial_state):
         """ Place Initial Armies on board. Executed once at begining of game.
@@ -26,7 +26,7 @@ class GreedyAgent(BaseAgent):
 
         # Add one army to a random territory
         owned_territories[randint(
-            0, len(owned_territories) - 1)].number_of_armies += ARMIES_NUMBER = 1
+            0, len(owned_territories) - 1)].number_of_armies += ARMIES_NUMBER
 
     def take_turn(self, current_state, heuristic, goal_test):
         """ Take Turn in game. Executed each turn on agents.

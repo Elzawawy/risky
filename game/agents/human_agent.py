@@ -33,7 +33,7 @@ class HumanAgent(BaseAgent):
             Returns:\\
                 * result_state: The resulting Map State of the game.
         """
-        return get_current_state_from_gui()
+        return self.get_current_state_from_gui()
 
     def get_current_state_from_gui(self):
         raise(NotImplementedError)
