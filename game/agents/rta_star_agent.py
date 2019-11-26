@@ -22,7 +22,7 @@ class RTAStarAgent(BaseAgent):
         # TODO: Should call here random_initial_reinforcement()
         raise(NotImplementedError)
 
-    def take_turn(self, current_state):
+    def take_turn(self, current_state, heuristic):
         """ Take Turn in game. Executed each turn on agents.
 
             Arguments:\\
@@ -30,7 +30,7 @@ class RTAStarAgent(BaseAgent):
             Returns:\\
                 * result_state: The resulting Map State of the game.
         """
-        goal_state = real_time_a_star_search(current_state, self.heuristic, self.cost)
+        goal_state = real_time_a_star_search(current_state, heuristic, current_state.cost)
         # TODO: Should act upon goal_state to return action to be done in game.
         # TODO: return next_state
         raise(NotImplementedError)

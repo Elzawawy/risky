@@ -19,7 +19,7 @@ class GreedyAgent(BaseAgent):
         # TODO: Should call here random_initial_reinforcement()
         raise(NotImplementedError)
 
-    def take_turn(self, current_state):
+    def take_turn(self, current_state, heuristic):
         """ Take Turn in game. Executed each turn on agents.
 
             Arguments:\\
@@ -27,7 +27,7 @@ class GreedyAgent(BaseAgent):
             Returns:\\
                 * result_state: The resulting Map State of the game.
         """
-        goal_state = greedy_best_first_search(current_state, self.heuristic)
+        goal_state = greedy_best_first_search(current_state, heuristic)
         # TODO: Should act upon goal_state to return action to be done in game.
         # TODO: return next_state
         raise(NotImplementedError)
