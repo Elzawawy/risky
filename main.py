@@ -26,4 +26,4 @@ if __name__ == "__main__":
     #                             RiskVisitor(), risk_game.utility,
     #                             risk_game.cutoff_test_using_depth(100))
 
-    PacifistAgent("Swidan").take_turn(initial_state)
+    # PacifistAgent("Swidan").take_turn(initial_state)

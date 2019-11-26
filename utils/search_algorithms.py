@@ -103,6 +103,9 @@ def real_time_a_star_search(initial_state, goal_test, heuristic, visitor):
             # If the neighbour exists in the visited_states dictionary, then stored heuristic value in the dictionary is used
             # and added to the cost from the current state to the neighbour to get the total cost
             if neighbour in visited_states_to_heuristic.keys():
+                neighbour.parent = visited_states_to_heuristic[neighbour].parent
+                neighbour.cost = visited_states_to_heuristic[neighbour].cost
+                neighbour.depth = visited_states_to_heuristic[neighbour].depth
                 neighbour_total_cost = visited_states_to_heuristic[neighbour] + current_state.cost_to(neighbour)
 
             # Else, then calculate the heuristic value of the neighbour
