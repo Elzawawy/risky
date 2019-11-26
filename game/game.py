@@ -10,6 +10,7 @@ class RiskGame:
     def utility(self, state):
         return len(state.get_owned_territories(state.player_name))
 
-    def cutoffTest(self, state):
-        return state.depth == 3 or self.is_goal(state)
-    
+    def cutoff_test_using_depth(self, depth):
+        def cutoff_test(state):
+            return state.depth == depth or self.is_goal(state)
+        return cutoff_test
