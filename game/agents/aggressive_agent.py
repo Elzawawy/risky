@@ -49,7 +49,7 @@ class AggressiveAgent(BaseAgent):
         first_loop = True
 
         while(True):
-            
+
             # Retrieve the player owned territories
             player_owned_territories = current_state.get_owned_territories(self.player_name)
 

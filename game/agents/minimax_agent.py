@@ -7,10 +7,12 @@ from random import randint
 
 
 class MinimaxAgent(BaseAgent):
-    def __init__(self, player_name, opponent_name):
+    def __init__(self, player_name, opponent_name, utility, cutoff_test):
         super().__init__(player_name)
         self.opponent_name = opponent_name
         self.visitor = RiskVisitor(player_name)
+        self.utility = utility
+        self.cutoff_test = cutoff_test
 
     def place_initial_armies(self, initial_state):
         """ Place Initial Armies on board. Executed once at begining of game.
@@ -27,10 +29,9 @@ class MinimaxAgent(BaseAgent):
             self.player_name)
 
         # Add one army to a random territory
-        owned_territories[randint(
-            0, len(owned_territories) - 1)].number_of_armies += ARMIES_NUMBER
+        owned_territories[randint(0, len(owned_territories) - 1)].number_of_armies += ARMIES_NUMBER
 
-    def take_turn(self, current_state, heuristic, utility, cutoff_test):
+    def take_turn(self, current_state):
         """ Take Turn in game. Executed each turn on agents.
 
             Arguments:\\
@@ -43,5 +44,5 @@ class MinimaxAgent(BaseAgent):
         """
         current_state.parent = None
         goal_state = real_time_minimax_alpha_beta_pruning(current_state, self.player_name,
-                                                          self.opponent_name, utility, cutoff_test,  self.visitor)
+                                                          self.opponent_name, self.utility, self.cutoff_test,  self.visitor)
         return back_track_path(goal_state)[0]

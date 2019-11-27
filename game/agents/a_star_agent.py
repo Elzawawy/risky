@@ -7,9 +7,11 @@ from random import randint
 
 class AStarAgent(BaseAgent):
 
-    def __init__(self,player_name):
+    def __init__(self,player_name, heuristic, goal_test):
         super().__init__(player_name)
         self.visitor = RiskVisitor(player_name)
+        self.heuristic = heuristic
+        self.goal_test = goal_test
 
     def place_initial_armies(self, initial_state):
         """ Place Initial Armies on board. Executed once at begining of game.
@@ -29,7 +31,7 @@ class AStarAgent(BaseAgent):
         owned_territories[randint(
             0, len(owned_territories) - 1)].number_of_armies += ARMIES_NUMBER
 
-    def take_turn(self, current_state, heuristic, goal_test):
+    def take_turn(self, current_state):
         """ Take Turn in game. Executed each turn on agents.
 
             Arguments:\\
@@ -41,5 +43,5 @@ class AStarAgent(BaseAgent):
         """
         # Start working as if root of tree from current_state as no need for whole game tree.
         current_state.parent = None
-        goal_state = a_star_search(current_state, goal_test, heuristic, self.visitor)
+        goal_state = a_star_search(current_state, self.goal_test, self.heuristic, self.visitor)
         return back_track_path(goal_state)[0]

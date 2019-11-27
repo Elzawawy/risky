@@ -85,7 +85,7 @@ class RiskGameState(BaseGraph):
         return None
 
     def get_additional_armies(self, player_name):
-        return max(3, len(self.get_owned_territories(player_name)) / 3)
+        return max(3, len(self.get_owned_territories(player_name)) // 3)
 
     def cost_to(self, state):
         # TODO: change it to calculate a cost from the self state to the other state
