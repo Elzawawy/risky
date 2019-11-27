@@ -1,3 +1,32 @@
-{"ALexandria": ["Cairo", "Luxor"],
-                           "Cairo": ["ALexandria"],
-                                "Luxor": ["ALexandria"]}
+{
+     "Alexandria": [
+          "Cairo",
+          "Luxor",
+          "Qena"
+     ],
+     "Cairo": [
+          "Alexandria",
+          "Giza",
+          "Suez"
+     ],
+     "Luxor": [
+          "Alexandria",
+          "Qena"
+     ],
+     "Giza": [
+          "Cairo",
+          "Luxor"
+     ],
+     "Qena": [
+          "luxor",
+          "sohag",
+          "Giza"
+     ],
+     "Sohag": [
+          "Qena"
+     ],
+     "Suez": [
+          "Giza",
+          "Cairo"
+     ]
+}

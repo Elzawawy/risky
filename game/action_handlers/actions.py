@@ -6,8 +6,8 @@ def attack(state, attacking_moves_sequence):
     for attacking_move in attacking_moves_sequence:
         attacking_territory = new_state.get_territory(attacking_move[ATTACKING_TERRITORY_INDEX])
         enemy_territory = new_state.get_territory(attacking_move[ENEMY_TERRITORY_INDEX])
-        print("in attack attacking and enemy",attacking_territory, enemy_territory )
-        print("in attack ", len(new_state.get_owned_territories(attacking_territory.owner)), attacking_territory.number_of_armies, enemy_territory.number_of_armies)
+        # print("in attack attacking and enemy",attacking_territory, enemy_territory )
+        # print("in attack ", len(new_state.get_owned_territories(attacking_territory.owner)), attacking_territory.number_of_armies, enemy_territory.number_of_armies)
         attacking_territory.number_of_armies -= 1
         enemy_territory.number_of_armies = 1
 

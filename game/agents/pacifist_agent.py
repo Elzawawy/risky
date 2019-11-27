@@ -1,6 +1,5 @@
 from game.agents.base_agent import BaseAgent
 from game.action_handlers.actions import reinforce_territory, attack
-from random import seed
 from random import randint
 import operator
 
@@ -18,7 +17,6 @@ class PacifistAgent(BaseAgent):
                 * result_state: The resulting Map State of the game.
         """
         ARMIES_NUMBER = 1
-        seed(1)
         # Get all owned territories
         owned_territories = initial_state.get_owned_territories(
             self.player_name)
@@ -52,14 +50,9 @@ class PacifistAgent(BaseAgent):
         # Get the territory with the fewest number of armies
         territory_with_fewest_armies = self.__sort_territories_ascending(player_owned_territories)
 
-        print(territory_with_fewest_armies.territory_name, territory_with_fewest_armies.number_of_armies)
-
-
         # Reinforce the territory with the fewest number of armies with the additional armies
         reinforce_territory(current_state,
                             territory_with_fewest_armies, current_state.get_additional_armies(self.player_name))
-
-        print(territory_with_fewest_armies.territory_name, territory_with_fewest_armies.number_of_armies)
         
         attacking_strategy = current_state.get_attacking_strategy(self.player_name)
 
@@ -69,8 +62,6 @@ class PacifistAgent(BaseAgent):
 
         # Get the enemy territory with fewest armies
         enemy_territory_with_fewest_armies = self.__sort_territories_ascending(enemy_territories)
-
-        print(enemy_territory_with_fewest_armies.territory_name, enemy_territory_with_fewest_armies.number_of_armies)
 
         # Attack the enemy territory with fewest armies by
         #  the player owned territory that can attack it

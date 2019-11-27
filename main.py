@@ -12,9 +12,8 @@ from time import time
 if __name__ == "__main__":
 
     # print(get_map("Egypt"))
-    seed(time())
-    risk_game = RiskGame(AgentTypes.A_STAR,
-                         AgentTypes.AGRESSIVE, "Egypt", "Swidan", "Mostafa")
+    risk_game = RiskGame(AgentTypes.AGRESSIVE,
+                         AgentTypes.PASSIVE, "test", "Swidan", "Mostafa")
     risk_game.initialize_map_with_armies()
 
     print(risk_game.start())

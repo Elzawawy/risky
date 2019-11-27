@@ -90,12 +90,8 @@ def real_time_a_star_search(initial_state, goal_test, heuristic, visitor):
     current_state = initial_state
     FIRST_BEST_STATE_INDEX = 2
     SECOND_BEST_TOTAL_COST_INDEX = 0
-    seed(1)
-    i = 0
+
     while(not goal_test(current_state)):
-        print(current_state.get_owned_territories("Swidan"))
-        print("iteration ", i)
-        i += 1
         total_cost_to_state = []
 
         # Expand the current state
