@@ -21,7 +21,7 @@ class GreedyAgent(BaseAgent):
                 * result_state: The resulting Map State of the game.
         """
         ARMIES_NUMBER = 1
-        seed(1)
+
         # Get all owned territories
         owned_territories = initial_state.get_owned_territories(
             self.player_name)
@@ -42,5 +42,6 @@ class GreedyAgent(BaseAgent):
         """
         # Start working as if root of tree from current_state as no need for whole game tree.
         current_state.parent = None
-        goal_state = greedy_best_first_search(current_state, self.goal_test, self.heuristic, self.visitor)
+        result = greedy_best_first_search(current_state, self.goal_test, self.heuristic, self.visitor)
+        goal_state = result[0]
         return back_track_path(goal_state)[0]

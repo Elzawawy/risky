@@ -43,5 +43,6 @@ class AStarAgent(BaseAgent):
         """
         # Start working as if root of tree from current_state as no need for whole game tree.
         current_state.parent = None
-        goal_state = a_star_search(current_state, self.goal_test, self.heuristic, self.visitor)
+        result = a_star_search(current_state, self.goal_test, self.heuristic, self.visitor)
+        goal_state = result[0]
         return back_track_path(goal_state)[0]

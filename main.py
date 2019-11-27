@@ -6,14 +6,18 @@ from game.game import RiskGame
 from game.agents.pacifist_agent import PacifistAgent
 from game.game import AgentTypes
 from game.map import get_map
+from random import seed
+from time import time
+
 if __name__ == "__main__":
 
     # print(get_map("Egypt"))
+    seed(time())
     risk_game = RiskGame(AgentTypes.A_STAR,
-                         AgentTypes.PASSIVE, "Egypt", "Swidan", "Mostafa")
+                         AgentTypes.AGRESSIVE, "Egypt", "Swidan", "Mostafa")
     risk_game.initialize_map_with_armies()
 
-    risk_game.start()
+    print(risk_game.start())
 
     # risk_game = RiskGame()
     # territory1 = Territory("ALexandria", "Swidan", 5)

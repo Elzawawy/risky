@@ -32,6 +32,8 @@ def greedy_best_first_search(initial_state, is_goal, heuristic, visitor):
     max_search_depth = 0
 
     while frontier:
+        if nodes_expanded >= 10000:
+            return (frontier.pop(), nodes_expanded, max_search_depth)
         state = frontier.pop()
         explored.add(state)
         # Goal Test: stop algorithm when goal is reached.
@@ -78,7 +80,7 @@ def real_time_a_star_search(initial_state, goal_test, heuristic, visitor):
         - initial_state : Starting state of problem.
         - heuristic : A heuristic estimate to goal h(n).
         - cost -- A cost function for a state.
-        - visitor -- a visitor attached with agent, to ensure layer separation. 
+        - visitor -- a visitor attached with agent, to ensure layer separation.
 
         Returns:
         - current_state : A state that eventually will be the goal state.
@@ -142,7 +144,7 @@ def minimax_alpha_beta_pruning(initial_state, player_name, opponent_name, utilit
             terminating state and return or not.
         - visitor: The visitor class to be used to take an action in each
             node traversed;it has to contain a visit function that takes no arguments
-            
+
         Returns:
         - child : A state having the maximum utility that can be reached.
     """
@@ -187,8 +189,9 @@ def minimax_alpha_beta_pruning(initial_state, player_name, opponent_name, utilit
         return maxChild, maxUtility
 
     child, utility = maximize(initial_state, -math.inf, math.inf)
-    print("goal ", len(child.get_owned_territories("Swidan")),
-          len(child.get_owned_territories("Mostafa")))
+    if not child:
+        return initial_state
+    # print("goal ", len(child.get_owned_territories(visitor.player_name)))
     return child
 
 
@@ -205,7 +208,7 @@ def real_time_minimax_alpha_beta_pruning(initial_state, player_name, opponent_na
             terminating state and return or not.
         - visitor: The visitor class to be used to take an action in each
             node traversed;it has to contain a visit function that takes no arguments
-            
+
         Returns:
         - child : A state having the maximum utility that can be reached.
     """

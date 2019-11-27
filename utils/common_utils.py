@@ -1,8 +1,10 @@
 import itertools
 
-def get_subsets(input_set):
+def get_subsets(input_set, max_length):
     subsets = []
     for i in range(len(input_set)+1):
+        if i == max_length:
+            break
         subsets.extend(list(itertools.permutations(input_set, i)))
     return subsets
 

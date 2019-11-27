@@ -57,6 +57,7 @@ class RiskVisitor():
                 List of a reinforcement children states.
         """
 
+        print("in get reinforcement chidlren")
         # Get all the possible combinations for reinforcement.
         reinforcement_combinations = partitions(
             additional_armies, len(player_territories))
@@ -80,7 +81,7 @@ class RiskVisitor():
 
         return reinforcement_combination_states
 
-    def _get_attacking_children(self, state):
+    def _get_attacking_children(self, state, max_recursion_depth):
         """
             Used to get all the children states after applying the territories attacking step.
 
@@ -91,9 +92,13 @@ class RiskVisitor():
             Returns:
                 List of all possible children states after applying the territories attacking step.
         """
-        print("in get attacking children")
+
+        print("rec depth",max_recursion_depth)
+        if max_recursion_depth == 2:
+            return []
         # Dictionary of territories eligibe to attack mapped to the enemys' territories
         attacking_strategy = state.get_attacking_strategy(self.player_name)
+        print("in get attacking children who can attack ", len(attacking_strategy))
 
         # Return if there is no enemys' territories to attack
         if(len(attacking_strategy) == 0):
@@ -107,11 +112,12 @@ class RiskVisitor():
             eligible_to_attack_armies_enemies_pairs.extend(
                 [(key, x) for x in attacking_strategy[key]])
 
+        max_subset_length = 5
         # Get all the possible attacking sequences that could be performed on the current state
         attack_sequence_subsets_pairs = get_subsets(
-            eligible_to_attack_armies_enemies_pairs)
-        print("input set ",eligible_to_attack_armies_enemies_pairs)
-        print("list of subsets ",attack_sequence_subsets_pairs)
+            eligible_to_attack_armies_enemies_pairs, max_subset_length)
+        print("input set ")
+        print("list of subsets ")
         # List of states consequent from applying all possible attacking sequences
         children_states = []
         for subset in attack_sequence_subsets_pairs:
@@ -127,15 +133,21 @@ class RiskVisitor():
             if self._validate_subset(subset):
                 # Add to the children states the result of performing attacking sequence on it
                 children_states.extend(
-                    self._get_attacking_children(attack(state, subset)))
+                    self._get_attacking_children(attack(state, subset), max_recursion_depth + 1))
         return children_states
 
     def _get_children(self, state, additional_armies, player_territories):
+        print("===================One expansion====================")
         reinforcement_children_states = self._get_reinforcement_children(state,
             additional_armies, player_territories)
 
         children_states = []
-        for reinforcement_child_state in reinforcement_children_states:
-            children_states.extend(self._get_attacking_children(reinforcement_child_state))
+        max_number_of_children = 10
+        for i,reinforcement_child_state in enumerate(reinforcement_children_states):
+            max_recursion_depth = 0
+            if i == max_number_of_children:
+                break
+            children_states.extend(self._get_attacking_children(reinforcement_child_state, max_recursion_depth))
 
+        print("children returned ",len(children_states))
         return children_states

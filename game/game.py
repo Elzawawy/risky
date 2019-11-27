@@ -30,14 +30,15 @@ class RiskGame:
         self.agent1_name = agent1_name
         self.agent2_name = agent2_name
         self.board = board
-        # self.map = get_map(board)
-        territory1 = Territory("ALexandria")
-        territory2 = Territory("Cairo")
-        territory3 = Territory("Luxor")
-
-        territory_neighbours_dict = {territory1: [territory2, territory3],
-                                     territory2: [territory1]}
-        self.map = territory_neighbours_dict
+        self.map = get_map(board)
+        # territory1 = Territory("ALexandria")
+        # territory2 = Territory("Cairo")
+        # territory3 = Territory("Luxor")
+        #
+        # territory_neighbours_dict = {territory1: [territory2, territory3],
+        #                              territory2: [territory1],
+        #                              territory3: [territory1]}
+        # self.map = territory_neighbours_dict
         self.agent1 = self.get_agent(agent1_type, agent1_name)
         self.agent2 = self.get_agent(agent2_type, agent2_name)
         self.turn = 0
@@ -47,7 +48,7 @@ class RiskGame:
 
     def get_agent(self, agent_type, player_name):
         return {
-            AgentTypes.MINIMAX: MinimaxAgent(self.agent1_name, self. agent2_name, self.utility, self.cutoff_test_using_depth(10)),
+            AgentTypes.MINIMAX: MinimaxAgent(self.agent1_name, self. agent2_name, self.utility, self.cutoff_test_using_depth(3)),
             AgentTypes.A_STAR: AStarAgent(player_name, self.heuristic, self.is_goal),
             AgentTypes.RTA_STAR: RTAStarAgent(player_name, self.heuristic, self.is_goal),
             AgentTypes.GREEDY: GreedyAgent(player_name, self.heuristic, self.is_goal),
@@ -75,6 +76,7 @@ class RiskGame:
             if self.is_goal(state):
                 return self.agent1_name, state
             print("==================Agent 2========================")
+            state.parent = None
             self.turn = 1
             state = self.agent2.take_turn(state)
             if self.is_goal(state):
@@ -83,18 +85,26 @@ class RiskGame:
                 tie_counter += 1
             if tie_counter == 5:
                 tie_counter = 0
-                self.break_tie()
+                self.break_tie(state)
                 owned_territories_1 = state.get_owned_territories(self.agent1.player_name)
 
     def break_tie(self, state):
         TIE_BREAK_ARMIES_NUMBER = 2
+
         for i in range(TIE_BREAK_ARMIES_NUMBER):
             self.agent1.place_initial_armies(state)
-            self.agent2.place_initial_armies(state)
+            # self.agent2.place_initial_armies(state)
 
     def is_goal(self, state):
         print("owned territories ", len(
             state.get_owned_territories(self.agent_names[self.turn])))
+        armies = [x.number_of_armies for x in state.get_owned_territories(self.agent_names[self.turn])]
+        if self.turn == 0:
+            x=1
+        else:
+            x=0
+        enemy_armies = [x.number_of_armies for x in state.get_owned_territories(self.agent_names[x])]
+        print("armies owned ",armies, "enemy armies",enemy_armies)
         return len(state.get_owned_territories(self.agent_names[0])) >= 0.7 * len(self.map) or len(state.get_owned_territories(self.agent_names[1])) >= 0.7 * len(self.map)
 
     def heuristic(self, state):
@@ -106,10 +116,10 @@ class RiskGame:
             sum_border_security_ratio += sum_enemy_amount_of_units * \
                 1.0 / owned_territory.number_of_armies
             sum_enemy_amount_of_units = 0
-        return sum_border_security_ratio
+        return 0.5*sum_border_security_ratio + 0.5 * len(state.get_owned_territories(self.agent_names[not self.turn]))
 
     def utility(self, state):
-        return len(state.get_owned_territories(state.player_name))
+        return len(state.get_owned_territories(self.agent_names[self.turn]))
 
     def cutoff_test_using_depth(self, depth):
         def cutoff_test(state):
