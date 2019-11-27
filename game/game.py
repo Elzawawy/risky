@@ -30,14 +30,18 @@ class RiskGame:
         self.agent1_name = agent1_name
         self.agent2_name = agent2_name
         self.board = board
-        # self.map = get_map(board)
-        territory1 = Territory("ALexandria")
-        territory2 = Territory("Cairo")
-        territory3 = Territory("Luxor")
+        self.map = get_map(board)
+        # territory1 = Territory("Alexandria")
+        # territory2 = Territory("Cairo")
+        # territory3 = Territory("Luxor")
+        # territory1 = Territory("Giza")
+        # territory2 = Territory("Qena")
+        # territory3 = Territory("Sohag")
+        # territory1 = Territory("Suez")
 
-        territory_neighbours_dict = {territory1: [territory2, territory3],
-                                     territory2: [territory1]}
-        self.map = territory_neighbours_dict
+        # territory_neighbours_dict = {territory1: [territory2, territory3],
+        #                              territory2: [territory1], territory3:[territory1]}
+        # self.map = territory_neighbours_dict
         self.agent1 = self.get_agent(agent1_type, agent1_name)
         self.agent2 = self.get_agent(agent2_type, agent2_name)
         self.turn = 0
@@ -67,30 +71,46 @@ class RiskGame:
             self.agent2.place_initial_armies(state)
         owned_territories_1 = None
         tie_counter = 0
-        owned_territories_1 = state.get_owned_territories(self.agent1.player_name)
+
+        initial_state = state.__deepcopy__()
+       
         while(1):
+            owned_territories_1 = state.get_owned_territories(self.agent1.player_name)
             print("==================Agent 1========================")
             self.turn = 0
             state = self.agent1.take_turn(state)
             if self.is_goal(state):
+                print(self.agent1_name)
+                for territory in state.map.keys():
+                    print(territory.territory_name, territory.number_of_armies)
                 return self.agent1_name, state
             print("==================Agent 2========================")
             self.turn = 1
             state = self.agent2.take_turn(state)
             if self.is_goal(state):
+                print(self.agent2_name)
+                for territory in state.map.keys():
+                    print(territory.territory_name, territory.number_of_armies)
                 return self.agent2_name, state
+
             if len(owned_territories_1) == len(state.get_owned_territories(self.agent1.player_name)):
                 tie_counter += 1
-            if tie_counter == 5:
+                print("tie ", tie_counter)
+
+            if tie_counter >= 5:
                 tie_counter = 0
-                self.break_tie()
+                self.break_tie(state)
                 owned_territories_1 = state.get_owned_territories(self.agent1.player_name)
 
     def break_tie(self, state):
-        TIE_BREAK_ARMIES_NUMBER = 2
-        for i in range(TIE_BREAK_ARMIES_NUMBER):
-            self.agent1.place_initial_armies(state)
-            self.agent2.place_initial_armies(state)
+        print("in tie breaking")
+        for territory in state.get_owned_territories(self.agent1_name):
+            territory.number_of_armies = 2
+
+        for territory in state.get_owned_territories(self.agent2_name):
+            territory.number_of_armies = 2
+
+        self.turn = 0
 
     def is_goal(self, state):
         print("owned territories ", len(

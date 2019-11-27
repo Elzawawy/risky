@@ -1,9 +1,7 @@
 from game.agents.base_agent import BaseAgent
 from game.action_handlers.actions import reinforce_territory, attack
-from random import seed
 from random import randint
 import operator
-
 
 class AggressiveAgent(BaseAgent):
 

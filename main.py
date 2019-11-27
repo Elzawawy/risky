@@ -9,8 +9,8 @@ from game.map import get_map
 if __name__ == "__main__":
 
     # print(get_map("Egypt"))
-    risk_game = RiskGame(AgentTypes.A_STAR,
-                         AgentTypes.PASSIVE, "Egypt", "Swidan", "Mostafa")
+    risk_game = RiskGame(AgentTypes.AGRESSIVE,
+                         AgentTypes.PASSIVE, "test", "Swidan", "Mostafa")
     risk_game.initialize_map_with_armies()
 
     risk_game.start()
