@@ -1,5 +1,6 @@
 from utils.datastructures.graph import BaseGraph
 from copy import deepcopy
+import json
 
 class Territory:
     def __init__(self, territory_name, owner=None, number_of_armies=0):
@@ -100,3 +101,9 @@ class RiskGameState(BaseGraph):
 
     def __le__(self, other):
         return self.cost_function(self) <= self.cost_function(other)
+
+    def to_json(self):
+        map_json_array = []
+        for territory in self.map.keys():
+            map_json_array.append({"name":territory.territory_name, "owner": territory.owner, "number_of_armies":territory.number_of_armies})
+        return {"state_map":map_json_array}
