@@ -1,10 +1,9 @@
 from utils.datastructures.graph import BaseGraph
-import itertools
-from utils.common_utils import get_subsets, partitions
 from copy import deepcopy
+import json
 
 class Territory:
-    def __init__(self, territory_name, owner, number_of_armies=0):
+    def __init__(self, territory_name, owner=None, number_of_armies=0):
         self.territory_name = territory_name
         self.number_of_armies = number_of_armies
         self.owner = owner
@@ -94,7 +93,7 @@ class RiskGameState(BaseGraph):
         return 1
 
     def get_attacking_enemies(self, territory, player_name):
-        return [x for x in self.get_adjacent_nodes(territory) 
+        return [x for x in self.get_adjacent_nodes(territory)
         if x.owner != player_name and territory.number_of_armies < x.number_of_armies]
 
     def __lt__(self, other):
@@ -102,3 +101,9 @@ class RiskGameState(BaseGraph):
 
     def __le__(self, other):
         return self.cost_function(self) <= self.cost_function(other)
+
+    def to_json(self):
+        map_json_array = []
+        for territory in self.map.keys():
+            map_json_array.append({"name":territory.territory_name, "owner": territory.owner, "number_of_armies":territory.number_of_armies})
+        return {"state_map":map_json_array}

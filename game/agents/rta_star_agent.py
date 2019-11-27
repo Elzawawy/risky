@@ -2,6 +2,8 @@ from game.agents.base_agent import BaseAgent
 from utils.search_algorithms import real_time_a_star_search
 from game.action_handlers.risk_visitor import RiskVisitor
 from utils.common_utils import back_track_path
+from random import seed
+from random import randint
 
 class RTAStarAgent(BaseAgent):
 
@@ -9,17 +11,23 @@ class RTAStarAgent(BaseAgent):
         super().__init__(player_name)
         self.visitor = RiskVisitor(player_name)
 
-    def place_initial_troops(self, initial_state, num_troops):
-        """ Place Initial Troops on board. Executed once at begining of game.
-
+    def place_initial_armies(self, initial_state):
+        """ Place Initial Armies on board. Executed once at begining of game.
+        
             Arguments:\\
                 * current_state: The current Map State of the game.\\
-                * num_troops: The number of troops to reinforce with.\\
             Returns:\\
                 * result_state: The resulting Map State of the game.
         """
-        # TODO: Should call here random_initial_reinforcement()
-        raise(NotImplementedError)
+        ARMIES_NUMBER = 1
+        seed(1)
+        # Get all owned territories
+        owned_territories = initial_state.get_owned_territories(
+            self.player_name)
+
+        # Add one army to a random territory
+        owned_territories[randint(
+            0, len(owned_territories) - 1)].number_of_armies += ARMIES_NUMBER
 
     def take_turn(self, current_state, heuristic, goal_test):
         """ Take Turn in game. Executed each turn on agents.

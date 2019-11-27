@@ -53,7 +53,6 @@ def greedy_best_first_search(initial_state, is_goal, heuristic, visitor):
                     frontier.append(neighbor)
     return None
 
-
 def a_star_search(initial_state, goal_test, heuristic, visitor):
     """A* search Algorithm is greedy best-first graph search with f(n) = g(n)+h(n).
 
@@ -91,7 +90,7 @@ def real_time_a_star_search(initial_state, goal_test, heuristic, visitor):
     SECOND_BEST_TOTAL_COST_INDEX = 0
     seed(1)
     i = 0
-    while(not (current_state)):
+    while(not goal_test(current_state)):
         print(current_state.get_owned_territories("Swidan"))
         print("iteration ", i)
         i += 1
@@ -103,6 +102,9 @@ def real_time_a_star_search(initial_state, goal_test, heuristic, visitor):
             # If the neighbour exists in the visited_states dictionary, then stored heuristic value in the dictionary is used
             # and added to the cost from the current state to the neighbour to get the total cost
             if neighbour in visited_states_to_heuristic.keys():
+                neighbour.parent = visited_states_to_heuristic[neighbour].parent
+                neighbour.cost = visited_states_to_heuristic[neighbour].cost
+                neighbour.depth = visited_states_to_heuristic[neighbour].depth
                 neighbour_total_cost = visited_states_to_heuristic[neighbour] + current_state.cost_to(neighbour)
 
             # Else, then calculate the heuristic value of the neighbour

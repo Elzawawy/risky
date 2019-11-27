@@ -18,6 +18,7 @@ if __name__ == "__main__":
                                  territory3: [territory1]}
 
     initial_state = RiskGameState(territory_neighbours_dict, "Swidan")
+    print(initial_state.to_json())
     # greedy_best_first_search(initial_state, lambda x: 1, RiskVisitor())
     # minimax_alpha_beta_pruning(initial_state, "Swidan", "Mostafa",
     #                            RiskVisitor(), risk_game.utility,
@@ -26,4 +27,4 @@ if __name__ == "__main__":
     #                             RiskVisitor(), risk_game.utility,
     #                             risk_game.cutoff_test_using_depth(100))
 
-    PacifistAgent("Swidan").take_turn(initial_state)
+    # PacifistAgent("Swidan").take_turn(initial_state)
