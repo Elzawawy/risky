@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Risk Game</title>
+    <style>
+      #game{
+        background-image: url("./images/usmap2.png");
+      }
+    </style>
+    <link rel="stylesheet" href="./css/game.css">
+  </head>
+  <body>
+    <center>
+
+    <header>
+      <p id="msg">Game has started</p>
+    </header>
+
+    <div id="game">
+      <span class="army" style="margin-top: 80px;  margin-left: -10px;  background-color:red" id="North Dakota">0</span>
+      <span class="army" style="margin-top: 80px;  margin-left: -130px; background-color:red" id="Montana">1</span>
+      <span class="army" style="margin-top: 130px; margin-left: -240px; background-color:red" id="Idaho">2</span>
+      <span class="army" style="margin-top: 30px;  margin-left: -310px; background-color:red" id="Washington">3</span>
+      <span class="army" style="margin-top: 120px; margin-left: -330px; background-color:red" id="Oregon">4</span>
+      <span class="army" style="margin-top: 168px; margin-left: -375px; background-color:red" id="California">5</span>
+      <span class="army" style="margin-top: 190px; margin-left: -280px; background-color:red" id="Nevada">6</span>
+      <span class="army" style="margin-top: 230px; margin-left: -200px; background-color:red" id="Utah">7</span>
+      <span class="army" style="margin-top: 250px; margin-left: -100px; background-color:red" id="Colorado">8</span>
+      <span class="army" style="margin-top: 340px; margin-left: -120px; background-color:red" id="New Mexico">9</span>
+      <span class="army" style="margin-top: 340px; margin-left: -220px; background-color:red" id="Arizona">10</span>
+      <span class="army" style="margin-top: 420px; margin-left: -10px;  background-color:red" id="Texas">11</span>
+      <span class="army" style="margin-top: 340px; margin-left: 30px;   background-color:red" id="Oklahoma">12</span>
+      <span class="army" style="margin-top: 345px; margin-left: 110px;  background-color:red" id="Arkansas">13</span>
+      <span class="army" style="margin-top: 270px; margin-left: 110px;  background-color:red" id="Missouri">14</span>
+      <span class="army" style="margin-top: 190px; margin-left: 100px;  background-color:red" id="Iowa">15</span>
+      <span class="army" style="margin-top: 100px; margin-left: 45px;   background-color:red" id="Minnesota">16</span>
+      <span class="army" style="margin-top: 130px; margin-left: 120px;  background-color:red" id="Wisconsin">17</span>
+      <span class="army" style="margin-top: 220px; margin-left: 150px;  background-color:red" id="Illinois">18</span>
+      <span class="army" style="margin-top: 220px; margin-left: 185px;  background-color:red" id="Indiana">19</span>
+      <span class="army" style="margin-top: 220px; margin-left: 250px;  background-color:red" id="Ohio">20</span>
+      <span class="army" style="margin-top: 150px; margin-left: 210px;  background-color:red" id="Michigan">21</span>
+      <span class="army" style="margin-top: 420px; margin-left: 105px;  background-color:red" id="Louisiana">22</span>
+      <span class="army" style="margin-top: 265px; margin-left: 235px;  background-color:red" id="Kentucky">23</span>
+      <span class="army" style="margin-top: 315px; margin-left: 220px;  background-color:red" id="Tennessee">24</span>
+      <span class="army" style="margin-top: 300px; margin-left: 315px;  background-color:red" id="North Carolina">25</span>
+      <span class="army" style="margin-top: 250px; margin-left: 325px;  background-color:red" id="Virginia">26</span>
+      <span class="army" style="margin-top: 165px; margin-left: 335px;  background-color:red" id="Pennsylvania">27</span>
+      <span class="army" style="margin-top: 110px; margin-left: 345px;  background-color:red" id="New York">28</span>
+      <span class="army" style="margin-top: 90px;  margin-left: 375px;  background-color:red" id="Vermont">29</span>
+      <span class="army" style="margin-top: 100px; margin-left: 395px;  background-color:red" id="New Hampshire">30</span>
+      <span class="army" style="margin-top: 40px;  margin-left: 410px;  background-color:red" id="Maine">31</span>
+      <span class="army" style="margin-top: 125px; margin-left: 385px;  background-color:red" id="Massachusetts">32</span>
+      <span class="army" style="margin-top: 250px; margin-left: 275px;  background-color:red" id="West Virginia">33</span>
+      <span class="army" style="margin-top: 380px; margin-left: 200px;  background-color:red" id="Alabama">34</span>
+      <span class="army" style="margin-top: 380px; margin-left: 145px;  background-color:red" id="Mississippi">35</span>
+      <span class="army" style="margin-top: 380px; margin-left: 255px;  background-color:red" id="Georgia">36</span>
+      <span class="army" style="margin-top: 350px; margin-left: 315px;  background-color:red" id="South Carolina">37</span>
+      <span class="army" style="margin-top: 470px; margin-left: 300px;  background-color:red" id="Florida">38</span>
+      <span class="army" style="margin-top: 150px; margin-left: -140px; background-color:red" id="Wyoming">39</span>
+      <span class="army" style="margin-top: 210px; margin-left: -25px;  background-color:red" id="Nebraska">40</span>
+      <span class="army" style="margin-top: 140px; margin-left: -60px;  background-color:red" id="North Dakota">41</span>
+      <span class="army" style="margin-top: 270px; margin-left: -10px;  background-color:red" id="Kansas">42</span>
+      <span class="army" style="margin-top: 440px; margin-left: -320px; background-color:red" id="Alaska">43</span>
+      <span class="army" style="margin-top: 520px; margin-left: -130px; background-color:red" id="Hawaii">44</span>
+      <span class="army" style="margin-top: 210px; margin-left: 335px;  background-color:red" id="Maryland">45</span>
+      <span class="army" style="margin-top: 195px; margin-left: 375px;  background-color:red" id="New Jersey">46</span>
+      <span class="army" style="margin-top: 155px; margin-left: 385px;  background-color:red" id="Connecticut">47</span>
+      <span class="army" style="margin-top: 155px; margin-left: 415px;  background-color:red" id="Rhode Island">48</span>
+      <span class="army" style="margin-top: 225px; margin-left: 375px;  background-color:red" id="Delaware">49</span>
+    </div>
+
+    </center>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/game.js"></script>
+  </body>
+</html>

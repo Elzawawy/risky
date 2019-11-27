@@ -1,0 +1,82 @@
+*{
+    margin: 0;
+    padding: 0;
+  }
+  body{
+    background-image: url("../images/bg.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+  h1{
+    color: rgb(204, 34, 21);
+    font-size: 40px;
+    margin-top: 40px;
+    text-shadow: 1px 1px 5px black;
+    font-family: 'Orbitron', sans-serif;
+  }
+  #maps{
+    margin-top: 60px;
+    width: 60%;
+    background-color: rgba(0,0,0,0.6);
+    border-radius: 5px;
+  }
+  #maps img{
+    width: 40%;
+    margin: 20px;
+    border: 5px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  #maps img:hover{
+    opacity: 0.85;
+  }
+  #maps img.selected{
+    border-color: yellow;
+    opacity: 1;
+    cursor: default;
+  }
+  form{
+    margin-top: 60px;
+  }
+  select{
+    margin: 20px;
+    width: 350px;
+    height: 40px;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+  }
+  #playerOne{
+    background-color: blue;
+  }
+  #playerTwo{
+    background-color: red;
+  }
+  #isEgypt{
+    visibility: hidden;
+  }
+  button{
+    width: 200px;
+    height: 40px;
+    background-color: lawngreen;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  button:hover{
+    opacity: 1;
+    transition: all 0.5s ease;
+  }
+  footer{
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 22px;
+    font-family: 'Kaushan Script', cursive;
+  }
