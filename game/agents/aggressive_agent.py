@@ -19,12 +19,13 @@ class AggressiveAgent(BaseAgent):
                 * result_state: The resulting Map State of the game.
         """
         ARMIES_NUMBER = 1
-        seed(1)
         # Get all owned territories
         owned_territories = initial_state.get_owned_territories(self.player_name)
 
         # Add one army to a random territory
-        owned_territories[randint(0, len(owned_territories) - 1)].number_of_armies += ARMIES_NUMBER
+        random_int = randint(0, len(owned_territories) - 1)
+        print("aggressive random element to place init armies",random_int)
+        owned_territories[random_int].number_of_armies += ARMIES_NUMBER
 
     def take_turn(self, current_state):
         """ Take Turn in game. Executed each turn on agents.
@@ -57,7 +58,7 @@ class AggressiveAgent(BaseAgent):
             territory_with_most_armies = self.__get_first_territory_after_sorting(
                 player_owned_territories, True)
 
-            print(territory_with_most_armies.territory_name, territory_with_most_armies.number_of_armies)
+            # print(territory_with_most_armies.territory_name, territory_with_most_armies.number_of_armies)
 
             if(first_loop):
                 # Reinforce the territory with the most number of armies with the additional armies
@@ -65,7 +66,7 @@ class AggressiveAgent(BaseAgent):
                     territory_with_most_armies,current_state.get_additional_armies(self.player_name))
                 first_loop = False
 
-            print(territory_with_most_armies.territory_name, territory_with_most_armies.number_of_armies)
+            # print(territory_with_most_armies.territory_name, territory_with_most_armies.number_of_armies)
 
             attacking_strategy = current_state.get_attacking_strategy(self.player_name)
 

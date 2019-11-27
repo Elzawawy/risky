@@ -19,7 +19,7 @@ class RiskVisitor():
         return children
 
     def _validate_subset(self, attacking_moves_sequence):
-        print("in validate_subset ")
+        print("in validate_subset ", attacking_moves_sequence)
         attacking_territories_to_armies_number = {}
         enemy_territories = set()
         ATTACKING_TERRITORY_INDEX = 0
@@ -110,8 +110,8 @@ class RiskVisitor():
         # Get all the possible attacking sequences that could be performed on the current state
         attack_sequence_subsets_pairs = get_subsets(
             eligible_to_attack_armies_enemies_pairs)
-        print("input set ")
-        print("list of subsets ")
+        print("input set ",eligible_to_attack_armies_enemies_pairs)
+        print("list of subsets ",attack_sequence_subsets_pairs)
         # List of states consequent from applying all possible attacking sequences
         children_states = []
         for subset in attack_sequence_subsets_pairs:

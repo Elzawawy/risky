@@ -9,6 +9,7 @@ from game.agents.greedy_agent import GreedyAgent
 from game.agents.rta_star_agent import RTAStarAgent
 from game.agents.human_agent import HumanAgent
 from enum import Enum
+from game.components import Territory
 
 
 class AgentTypes(Enum):
@@ -29,7 +30,14 @@ class RiskGame:
         self.agent1_name = agent1_name
         self.agent2_name = agent2_name
         self.board = board
-        self.map = get_map(board)
+        # self.map = get_map(board)
+        territory1 = Territory("ALexandria")
+        territory2 = Territory("Cairo")
+        territory3 = Territory("Luxor")
+
+        territory_neighbours_dict = {territory1: [territory2, territory3],
+                                     territory2: [territory1]}
+        self.map = territory_neighbours_dict
         self.agent1 = self.get_agent(agent1_type, agent1_name)
         self.agent2 = self.get_agent(agent2_type, agent2_name)
         self.turn = 0
@@ -57,19 +65,37 @@ class RiskGame:
             self.agent1.place_initial_armies(state)
             self.turn = 1
             self.agent2.place_initial_armies(state)
+        owned_territories_1 = None
+        tie_counter = 0
+        owned_territories_1 = state.get_owned_territories(self.agent1.player_name)
         while(1):
+            print("==================Agent 1========================")
             self.turn = 0
             state = self.agent1.take_turn(state)
             if self.is_goal(state):
                 return self.agent1_name, state
+            print("==================Agent 2========================")
             self.turn = 1
             state = self.agent2.take_turn(state)
             if self.is_goal(state):
                 return self.agent2_name, state
+            if len(owned_territories_1) == len(state.get_owned_territories(self.agent1.player_name)):
+                tie_counter += 1
+            if tie_counter == 5:
+                tie_counter = 0
+                self.break_tie()
+                owned_territories_1 = state.get_owned_territories(self.agent1.player_name)
+
+    def break_tie(self, state):
+        TIE_BREAK_ARMIES_NUMBER = 2
+        for i in range(TIE_BREAK_ARMIES_NUMBER):
+            self.agent1.place_initial_armies(state)
+            self.agent2.place_initial_armies(state)
 
     def is_goal(self, state):
-        print("owned territories ", len(state.get_owned_territories(self.agent_names[self.turn])))
-        return len(state.get_owned_territories(self.agent_names[self.turn])) >= 0.8 * len(self.map)
+        print("owned territories ", len(
+            state.get_owned_territories(self.agent_names[self.turn])))
+        return len(state.get_owned_territories(self.agent_names[0])) >= 0.7 * len(self.map) or len(state.get_owned_territories(self.agent_names[1])) >= 0.7 * len(self.map)
 
     def heuristic(self, state):
         sum_enemy_amount_of_units = 0
@@ -91,17 +117,20 @@ class RiskGame:
         return cutoff_test
 
     def initialize_map_with_armies(self):
+        ARMIES_NUMBER = 2
         shuffled_map_keys = list(self.map.keys())
         shuffle(shuffled_map_keys)
         each_player_max_territory_number = len(self.map.keys())//2
 
         for i in range(each_player_max_territory_number):
             shuffled_map_keys[i].owner = self.agent_names[0]
-            shuffled_map_keys[i].number_of_armies = 1
+            shuffled_map_keys[i].number_of_armies = ARMIES_NUMBER
             shuffled_map_keys[i
                               + each_player_max_territory_number].owner = self.agent_names[1]
             shuffled_map_keys[i
-                              + each_player_max_territory_number].number_of_armies = 1
+                              + each_player_max_territory_number].number_of_armies = ARMIES_NUMBER
         if len(self.map.keys()) % 2 != 0:
-            shuffled_map_keys[len(self.map.keys())-1].owner = self.agent_names[1]
-            shuffled_map_keys[len(self.map.keys())-1].number_of_armies = 1
+            shuffled_map_keys[len(self.map.keys())
+                              - 1].owner = self.agent_names[1]
+            shuffled_map_keys[len(self.map.keys())
+                              - 1].number_of_armies = ARMIES_NUMBER

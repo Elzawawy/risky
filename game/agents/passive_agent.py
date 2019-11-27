@@ -18,12 +18,14 @@ class PassiveAgent(BaseAgent):
                 * result_state: The resulting Map State of the game.
         """
         ARMIES_NUMBER = 1
-        seed(1)
+        # seed(1)
         # Get all owned territories
         owned_territories = initial_state.get_owned_territories(self.player_name)
 
         # Add one army to a random territory
-        owned_territories[randint(0, len(owned_territories) - 1)].number_of_armies += ARMIES_NUMBER
+        random_int = randint(0, len(owned_territories) - 1)
+        print("passive random element to place init armies",random_int)
+        owned_territories[random_int].number_of_armies += ARMIES_NUMBER
 
     def take_turn(self, current_state):
         """ Take Turn in game. Executed each turn on agents.

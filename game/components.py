@@ -72,7 +72,7 @@ class RiskGameState(BaseGraph):
         for territory in eligible_to_attack_territories:
             # For each eligible territories, find the enemys' territories list that it could attack
             adjacent_territories = [x for x in self.get_adjacent_nodes(
-                territory) if x.owner != player_name and territory.number_of_armies > x.number_of_armies]
+                territory) if x.owner != player_name and territory.number_of_armies >= x.number_of_armies]
 
             # If the enemys' territories list number of armies > 0 add it to the attacking_strategy_map
             if len(adjacent_territories) > 0:
