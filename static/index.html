@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Risk Game</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/index.css">
+
+  </head>
+  <body>
+
+    <center>
+      <h1>Risk Game</h1>
+
+      <div id="maps">
+        <img src="./images/egypt.jpg" alt="Egypt map" class="selected">
+        <img src="./images/us2.jpg" alt="US map" class="">
+      </div>
+
+      <form action="play" method="post">
+        <div id="isEgypt">
+          <input type="radio" name="map" value="egypt" id="eg">
+          <input type="radio" name="map" value="us" id="us">
+        </div>
+        <select id="playerOne" name="playerOne">
+            <option value="" disabled selected>Choose Agent One</option>
+            <option value="0">MiniMax</option>
+            <option value="1">A Star</option>
+            <option value="2">Real-Time A Star</option>
+            <option value="3">Greedy</option>
+            <option value="4">Pacifist</option>
+            <option value="5">Aggresive</option>
+            <option value="6">Passive</option>
+            <option value="7">Human</option>
+          </select>
+
+          <select id="playerTwo" name="playerTwo">
+            <option value="" disabled selected>Choose Agent Two</option>
+            <option value="0">MiniMax</option>
+            <option value="1">A Star</option>
+            <option value="2">Real-Time A Star</option>
+            <option value="3">Greedy</option>
+            <option value="4">Pacifist</option>
+            <option value="5">Aggresive</option>
+            <option value="6">Passive</option>
+            <option value="7">Human</option>
+          </select>
+          <br /><br /><br /><br /><br />
+          <button type="submit" name="submit">Start Game!</button>
+      </form>
+
+    </center>
+
+    <script type="text/javascript" src="./js/index.js"></script>
+  
+  
+
+  </body>
+  
+
+    
+</html>
