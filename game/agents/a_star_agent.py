@@ -22,7 +22,6 @@ class AStarAgent(BaseAgent):
                 * result_state: The resulting Map State of the game.
         """
         ARMIES_NUMBER = 1
-        seed(1)
         # Get all owned territories
         owned_territories = initial_state.get_owned_territories(
             self.player_name)
