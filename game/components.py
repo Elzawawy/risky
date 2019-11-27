@@ -10,6 +10,9 @@ class Territory:
 
     def __eq__(self, obj):
         return self.territory_name == obj.territory_name
+    def __deepcopy__(self,memo):
+        return type(self)(deepcopy(self.territory_name),deepcopy(self.owner),deepcopy(self.number_of_armies))
+
 
     def __hash__(self):
         return hash(self.territory_name)
@@ -27,8 +30,7 @@ class RiskGameState(BaseGraph):
 
 
     def __deepcopy__(self):
-        new_instance = type(self)(deepcopy(self.map), self.parent, self.cost, self.depth)
-        return new_instance
+        return type(self)(deepcopy(self.map), self.parent, self.cost, self.depth)
 
     def __eq__(self, other):
         other_map_keys = {x.territory_name: x for x in other.map.keys()}
@@ -64,6 +66,10 @@ class RiskGameState(BaseGraph):
         # Get all the owned territories which have number of armies > 1 (eligible to attack)
         eligible_to_attack_territories = [
             x for x in self.get_owned_territories(player_name) if x.number_of_armies > 1]
+        print("*****************************************************")
+        print("in attacking strategy ",[x.number_of_armies for x in eligible_to_attack_territories])
+        print("*****************************************************")
+
         # A map where:
         # key -> territory eligible to attack
         # value -> enemys' territories list that could be attacked
@@ -77,11 +83,18 @@ class RiskGameState(BaseGraph):
             # If the enemys' territories list number of armies > 0 add it to the attacking_strategy_map
             if len(adjacent_territories) > 0:
                 attacking_strategy_map[territory] = adjacent_territories
+
+        print("*********************************************************")
+        for x in attacking_strategy_map.items():
+            print(x[0].number_of_armies)
+            print([y.number_of_armies for y in x[1]])
+        print("in attacking strategy enemies")
+        print("*********************************************************")
         return attacking_strategy_map
 
     def get_territory(self, territory):
         for node in self.adjacency_list.keys():
-            if node == territory:
+            if node.territory_name == territory.territory_name:
                 return node
         return None
 
