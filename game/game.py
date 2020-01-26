@@ -111,7 +111,7 @@ class RiskGame:
         for territory in state.get_owned_territories(self.agent2_name):
             territory.number_of_armies = 2
 
-        self.turn = 0
+        
 
     def is_goal(self, state):
         print("owned territories ", len(

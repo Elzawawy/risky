@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     # print(get_map("Egypt"))
     risk_game = RiskGame(AgentTypes.MINIMAX,
-                         AgentTypes.RTA_STAR, "Egypt", "Swidan", "Mostafa")
+                         AgentTypes.PACIFIST, "test", "player 1", "player 2")
     risk_game.initialize_map_with_armies()
 
     print(risk_game.start())
