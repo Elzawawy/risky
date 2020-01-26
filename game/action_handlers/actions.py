@@ -4,10 +4,16 @@ def attack(state, attacking_moves_sequence):
     ATTACKING_TERRITORY_INDEX = 0
     ENEMY_TERRITORY_INDEX = 1
     for attacking_move in attacking_moves_sequence:
+        print("in attack attacking move",attacking_move)
+        print("new state map in attack", len(new_state.map))
+        print("enemy",attacking_move[ENEMY_TERRITORY_INDEX].territory_name)
         attacking_territory = new_state.get_territory(attacking_move[ATTACKING_TERRITORY_INDEX])
         enemy_territory = new_state.get_territory(attacking_move[ENEMY_TERRITORY_INDEX])
         # print("in attack attacking and enemy",attacking_territory, enemy_territory )
         # print("in attack ", len(new_state.get_owned_territories(attacking_territory.owner)), attacking_territory.number_of_armies, enemy_territory.number_of_armies)
+        # print("attacking army before ",attacking_territory.number_of_armies)
+        # print("enemy army before ",enemy_territory.number_of_armies)
+
         attacking_territory.number_of_armies -= 1
         enemy_territory.number_of_armies = 1
 

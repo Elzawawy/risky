@@ -128,8 +128,13 @@ class RiskVisitor():
                 children_states.append(state)
                 continue
 
+            print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            print("before validate", [(x.number_of_armies,y.number_of_armies) for x,y in subset])
             # If the attacking sequence subset is valid, perform it
             print("validate ",self._validate_subset(subset))
+            print("after validate", [(x.number_of_armies,y.number_of_armies) for x,y in subset])
+            print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
             if self._validate_subset(subset):
                 # Add to the children states the result of performing attacking sequence on it
                 children_states.extend(
