@@ -1,5 +1,4 @@
 # RISK
-<p align='center'>Made with :heart: by <b>Amr Elzawawy</b>, <b>Omar Swidan</b> and <b>Mostafa Yousry</b></p>
 
 <p align='center'> <img src='https://images-na.ssl-images-amazon.com/images/I/51xis6CpkxL._AC_.jpg'/></p>
 
@@ -87,6 +86,11 @@ running.
 
 Now we recommend you take a look at the references below for more exploration and maybe try building it yourself using them one day. :closed_book: :green_book:
 
+## Team Acknolwedgments
+
+- [@oswidan97](https://github.com/oswidan97)
+- [@MostafaYousry](https://github.com/MostafaYousry)
+- [@ramikhafagi96](https://github.com/ramikhafagi96)
 
 ## References
 
@@ -101,3 +105,7 @@ Now we recommend you take a look at the references below for more exploration an
 5. *[Hahn, Franz. "Evaluating Heuristics in the Game Risk: An Artificial Intelligence Perspective." PhD diss., B. Sc. Thesis, Maastricht Univ., Netherlands, 2010.](https://project.dke.maastrichtuniversity.nl/games/files/bsc/Hahn_Bsc-paper.pdf)*
 
 6. *[Korf, Richard E. "Real-time heuristic search." Artificial intelligence 42, no. 2-3 (1990): 189-211.](https://www.sciencedirect.com/science/article/abs/pii/0004370290900544)*
+
+---
+
+<h3 align='center'>Made with :heart:</h3>
