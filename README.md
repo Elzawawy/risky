@@ -1,4 +1,4 @@
-# RISK
+<h1 align='center'>RISKY</h1>
 
 <p align='center'> <img src='https://images-na.ssl-images-amazon.com/images/I/51xis6CpkxL._AC_.jpg'/></p>
 
