@@ -33,7 +33,11 @@ and playing mode. In the simulation mode, the user will choose any two agents fr
 the defined agents except for the human agent, to play against each other. In the
 playing mode, the human agent will choose only one agent to play against it.
 
-## Agents we built
+---
+
+## Game Agents
+There are two types of agents we have built, we discuss each type in much detail next.
+
 ### AI Agents 
 - A **greedy** agent, that picks the move with best immediate heuristic value. It is an informed search agent that uses the heuristic function “h(n)” to estimate how close a state is to goal.
 
@@ -59,7 +63,9 @@ he can attack.
 - A **nearly pacifist** agent, that places its armies like the completely passive agent,
 then conquers only one territory with fewest armies (if it can).
 
-## GUI of Game
+---
+
+## Web-side of the Game
 <p align='center'><img src='./screenshots/game_entry.png'/></p>
 <p align='center'><img src='./screenshots/us_map.png'/></p>
 <p align='center'><img src='./screenshots/egy_map.png'/></p>
